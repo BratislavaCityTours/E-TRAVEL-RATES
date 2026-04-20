@@ -3,487 +3,536 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>E-TRAVEL.SK — Buy Rate Finder 2026</title>
+<title>E-TRAVEL.SK — Buy Rate Finder</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f4f0;color:#1a1a1a;font-size:14px}
-.header{background:#fff;border-bottom:1px solid #e0ddd6;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:50}
-.logo{font-size:16px;font-weight:600}.logo span{color:#185FA5}
-.hright{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.year-tabs{display:flex;gap:4px}
-.ytab{padding:4px 13px;border:1px solid #ccc;border-radius:6px;font-size:12px;cursor:pointer;background:#fff;color:#555}
-.ytab.active{background:#185FA5;border-color:#185FA5;color:#fff}
-.sync-status{font-size:11px;padding:3px 10px;border-radius:10px;background:#e8f5e9;color:#2e7d32;border:1px solid #c8e6c9}
-.sync-status.error{background:#ffebee;color:#c62828;border-color:#ffcdd2}
-.sync-status.loading{background:#e3f2fd;color:#1565c0;border-color:#bbdefb}
-.main{padding:16px 20px;max-width:1400px;margin:0 auto}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
-.sc{background:#fff;border-radius:8px;padding:10px 14px;border:1px solid #e0ddd6}
-.sc-label{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px}
-.sc-val{font-size:22px;font-weight:600}
-.stabs{display:flex;gap:0;margin-bottom:12px;border:1px solid #d0cdc6;border-radius:7px;overflow:hidden;flex-wrap:wrap;background:#fff}
-.stab{padding:7px 13px;font-size:12px;cursor:pointer;border:none;background:transparent;color:#666;white-space:nowrap}
-.stab:hover{background:#f5f4f0}
-.stab.active{background:#185FA5;color:#fff}
-.search-bar{display:grid;grid-template-columns:2fr 1fr 1fr auto auto;gap:8px;margin-bottom:12px}
-.search-bar input,.search-bar select{height:34px;padding:0 10px;border:1px solid #d0cdc6;border-radius:6px;font-size:13px;background:#fff;color:#1a1a1a;width:100%}
-.search-bar input:focus,.search-bar select:focus{outline:none;border-color:#185FA5}
-.btn{height:34px;padding:0 14px;border:1px solid #d0cdc6;border-radius:6px;font-size:13px;cursor:pointer;background:#fff;color:#1a1a1a;white-space:nowrap}
-.btn:hover{background:#f5f4f0}
-.btn-primary{background:#185FA5;border-color:#185FA5;color:#fff}
-.btn-primary:hover{background:#0e4a82}
-.btn-success{background:#0F6E56;border-color:#0F6E56;color:#fff}
-.btn-success:hover{background:#0a5441}
-.meta{font-size:12px;color:#888;margin-bottom:8px}
-.tbl-wrap{background:#fff;border:1px solid #e0ddd6;border-radius:10px;overflow:auto}
-table{width:100%;border-collapse:collapse;font-size:12px}
-th{text-align:left;padding:8px 10px;font-weight:600;color:#888;border-bottom:1px solid #e8e5df;white-space:nowrap;font-size:11px;text-transform:uppercase;letter-spacing:0.04em;background:#faf9f7}
-td{padding:9px 10px;border-bottom:1px solid #f0ede8;color:#1a1a1a;vertical-align:middle}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:#faf9f7}
-.price{font-weight:600;color:#185FA5}
-.badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;white-space:nowrap}
-.b-transfer{background:#ddeefb;color:#0a4478}
-.b-guide{background:#ddf0e3;color:#1a5c2e}
-.b-restaurant{background:#fef0dc;color:#7a4410}
-.b-hotel{background:#ebe8fd;color:#3d2a8a}
-.b-attraction{background:#fde8e2;color:#7a2a18}
-.b-cruise{background:#d8f0eb;color:#0a5040}
-.b-concert{background:#fce8f2;color:#7a1e4a}
-.b-other{background:#eeede8;color:#444}
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center}
+:root{--blue:#185FA5;--blue-dark:#0e4a82;--blue-light:#e8f0fb;--green:#0F6E56;--bg:#f4f3ef;--white:#fff;--border:#e2dfd8;--text:#1a1a1a;--muted:#777;--card-shadow:0 2px 8px rgba(0,0,0,0.07)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
+.header{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-size:15px;font-weight:700;letter-spacing:-0.3px}.logo span{color:var(--blue)}
+.header-actions{display:flex;align-items:center;gap:10px}
+.breadcrumb{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.breadcrumb a{color:var(--blue);cursor:pointer;text-decoration:none}.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb .sep{color:var(--border)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--text);transition:all 0.15s}
+.btn:hover{background:var(--bg)}
+.btn-primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-dark)}
+.btn-green{background:var(--green);border-color:var(--green);color:#fff}.btn-green:hover{background:#0a5441}
+.btn-sm{padding:4px 10px;font-size:12px}
+.btn-ghost{border:none;background:none;color:var(--blue)}.btn-ghost:hover{background:var(--blue-light)}
+
+/* VIEWS */
+.view{display:none;padding:28px 24px;max-width:1100px;margin:0 auto}
+.view.active{display:block}
+
+/* HOME — category grid */
+.page-title{font-size:22px;font-weight:700;margin-bottom:6px}
+.page-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.cat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:24px 20px;cursor:pointer;transition:all 0.15s;text-align:center}
+.cat-card:hover{border-color:var(--blue);box-shadow:var(--card-shadow);transform:translateY(-2px)}
+.cat-icon{font-size:32px;margin-bottom:10px}
+.cat-name{font-size:15px;font-weight:600;margin-bottom:4px}
+.cat-count{font-size:12px;color:var(--muted)}
+
+/* SUPPLIER LIST */
+.supplier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.supplier-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px 20px;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:space-between}
+.supplier-card:hover{border-color:var(--blue);box-shadow:var(--card-shadow)}
+.supplier-info{}
+.supplier-name{font-size:14px;font-weight:600;margin-bottom:3px}
+.supplier-meta{font-size:12px;color:var(--muted)}
+.supplier-badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:5px;white-space:nowrap}
+.arrow{color:var(--muted);font-size:18px}
+
+/* SUPPLIER DETAIL — document style */
+.doc-header{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.doc-supplier-name{font-size:20px;font-weight:700;margin-bottom:4px}
+.doc-meta{font-size:13px;color:var(--muted)}
+.doc-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+.doc-section{background:var(--white);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.doc-section-title{padding:12px 20px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);background:#faf9f6;border-bottom:1px solid var(--border)}
+.rate-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:12px 20px;border-bottom:1px solid #f5f3ef}
+.rate-row:last-child{border-bottom:none}
+.rate-row:hover{background:#faf9f6}
+.rate-desc{font-size:13px;font-weight:500}
+.rate-group{font-size:12px;color:var(--muted);margin-top:2px}
+.rate-price{font-size:16px;font-weight:700;color:var(--blue);text-align:right;white-space:nowrap}
+.rate-unit{font-size:11px;color:var(--muted);text-align:right;white-space:nowrap}
+.rate-notes{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* PDF viewer */
+.pdf-section{background:var(--white);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.pdf-section-title{padding:12px 20px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);background:#faf9f6;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.pdf-embed{width:100%;height:600px;border:none}
+.pdf-upload-area{padding:32px;text-align:center;color:var(--muted);font-size:13px}
+.pdf-upload-area label{cursor:pointer;display:inline-block;padding:10px 20px;border:1.5px dashed var(--border);border-radius:8px;margin-top:10px;transition:all 0.15s}
+.pdf-upload-area label:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ADMIN PANEL */
+.admin-section{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:16px}
+.admin-title{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em}
+.form-group input,.form-group select,.form-group textarea{padding:8px 11px;border:1px solid var(--border);border-radius:7px;font-size:13px;background:var(--white);color:var(--text);width:100%}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--blue)}
+.form-group textarea{resize:vertical;min-height:56px}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center}
 .modal-bg.open{display:flex}
-.modal{background:#fff;border-radius:12px;border:1px solid #e0ddd6;padding:22px;width:560px;max-width:96vw;max-height:92vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.12)}
-.modal-title{font-size:16px;font-weight:600;margin-bottom:14px}
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-.fg .full{grid-column:1/-1}
-.fg label{font-size:11px;color:#666;font-weight:600;display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.03em}
-.fg input,.fg select,.fg textarea{width:100%;padding:7px 10px;border:1px solid #d0cdc6;border-radius:6px;font-size:13px;background:#fff;color:#1a1a1a}
-.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:#185FA5}
-.fg textarea{resize:vertical;min-height:52px}
-.mac{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;border-top:1px solid #e8e5df;padding-top:14px}
-.empty{text-align:center;padding:2.5rem;color:#aaa;font-size:13px}
-.seed-banner{background:#fff8e1;border:1px solid #ffe082;border-radius:7px;padding:10px 14px;font-size:12px;color:#7a5c00;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.spinner{display:inline-block;width:14px;height:14px;border:2px solid #ccc;border-top-color:#185FA5;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px}
-@keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:700px){.stats-row{grid-template-columns:1fr 1fr}.search-bar{grid-template-columns:1fr 1fr;gap:6px}.search-bar input{grid-column:1/-1}}
+.modal{background:var(--white);border-radius:14px;padding:24px;width:580px;max-width:96vw;max-height:92vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,0.15)}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:16px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+
+/* STATUS */
+.status-bar{position:fixed;bottom:16px;right:16px;background:#1a1a1a;color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;z-index:300;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.status-bar.show{opacity:1}
+
+/* BADGES */
+.badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600}
+.b-transfer{background:#ddeefb;color:#0a4478}.b-guide{background:#ddf0e3;color:#1a5c2e}
+.b-restaurant{background:#fef0dc;color:#7a4410}.b-hotel{background:#ebe8fd;color:#3d2a8a}
+.b-attraction{background:#fde8e2;color:#7a2a18}.b-cruise{background:#d8f0eb;color:#0a5040}
+.b-concert{background:#fce8f2;color:#7a1e4a}.b-other{background:#eeede8;color:#444}
+
+.empty-state{text-align:center;padding:48px 24px;color:var(--muted)}
+.empty-state .icon{font-size:40px;margin-bottom:12px}
+.empty-state p{font-size:14px}
+
+@media(max-width:600px){.cat-grid{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.view{padding:16px}}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="logo">E-TRAVEL<span>.SK</span> &nbsp;— Buy Rate Finder</div>
-  <div class="hright">
-    <div class="year-tabs" id="yearTabs"></div>
-    <span class="sync-status loading" id="syncStatus"><span class="spinner"></span>Connecting...</span>
-    <button class="btn btn-primary" onclick="openAdd()">+ Add rate</button>
+  <div style="display:flex;align-items:center;gap:16px">
+    <div class="logo">E-TRAVEL<span>.SK</span></div>
+    <div class="breadcrumb" id="breadcrumb"></div>
+  </div>
+  <div class="header-actions">
+    <span id="syncBadge" style="font-size:12px;color:var(--muted)">Connecting...</span>
+    <button class="btn btn-sm" onclick="showView('admin')">⚙ Admin</button>
   </div>
 </div>
 
-<div class="main">
-  <div id="seedBanner" class="seed-banner" style="display:none">
-    <span>⚠️ Database is empty. Click to load all 156 default rates.</span>
-    <button class="btn btn-primary" onclick="seedDatabase()">Load default rates</button>
+<!-- HOME VIEW -->
+<div class="view active" id="view-home">
+  <div class="page-title">Buy Rate Finder 2026</div>
+  <div class="page-sub">Select a service category to browse supplier rates</div>
+  <div class="cat-grid" id="catGrid"></div>
+</div>
+
+<!-- SUPPLIER LIST VIEW -->
+<div class="view" id="view-suppliers">
+  <div class="supplier-grid" id="supplierGrid"></div>
+</div>
+
+<!-- SUPPLIER DETAIL VIEW -->
+<div class="view" id="view-detail">
+  <div id="detailContent"></div>
+</div>
+
+<!-- ADMIN VIEW -->
+<div class="view" id="view-admin">
+  <div class="page-title">Admin panel</div>
+  <div class="page-sub">Add suppliers and manage rates</div>
+
+  <div class="admin-section">
+    <div class="admin-title">➕ Add new supplier</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Supplier name *</label><input id="aSupplier" placeholder="e.g. ADSERVICE"></div>
+      <div class="form-group"><label>Service type *</label>
+        <select id="aType">
+          <option value="">Select...</option>
+          <option>Transfer</option><option>Guide</option><option>Restaurant</option>
+          <option>Hotel</option><option>Attraction</option><option>Cruise</option>
+          <option>Concert</option><option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Destination *</label><input id="aDest" placeholder="e.g. Bratislava"></div>
+      <div class="form-group"><label>Year</label>
+        <select id="aYear"><option>2026</option><option>2025</option><option>2027</option></select>
+      </div>
+      <div class="form-group full"><label>Notes / general conditions</label><textarea id="aNotes" placeholder="General conditions, cancellation policy, contacts..."></textarea></div>
+    </div>
+    <div style="margin-top:10px"><button class="btn btn-primary" onclick="addSupplier()">Add supplier</button></div>
   </div>
 
-  <div class="stats-row" id="statsRow"></div>
-  <div class="stabs" id="stabs"></div>
-
-  <div class="search-bar">
-    <input type="text" id="searchQ" placeholder="Search supplier, service, route, description..." oninput="renderTable()">
-    <select id="filterDest" onchange="renderTable()">
-      <option value="">All destinations</option>
-      <option>Bratislava</option><option>Vienna</option><option>Budapest</option>
-      <option>Piešťany</option><option>Pezinok</option><option>Prague</option>
-      <option>Salzburg</option><option>Slovakia</option>
-    </select>
-    <select id="filterSupplier" onchange="renderTable()"><option value="">All suppliers</option></select>
-    <button class="btn" onclick="clearSearch()">Clear</button>
-    <button class="btn btn-primary" onclick="openAdd()">+ Add</button>
-  </div>
-
-  <div class="meta" id="meta"></div>
-
-  <div class="tbl-wrap">
-    <table id="rateTable">
-      <thead><tr>
-        <th>Supplier</th><th>Type</th><th>Destination</th>
-        <th>Service / description</th><th>Group / pax</th>
-        <th>Buy price</th><th>Unit</th><th>Notes</th><th></th>
-      </tr></thead>
-      <tbody id="tbody"></tbody>
-    </table>
-    <div class="empty" id="emptyMsg" style="display:none">No rates found.</div>
+  <div class="admin-section">
+    <div class="admin-title">📋 All suppliers</div>
+    <div id="adminSupplierList"></div>
   </div>
 </div>
 
-<!-- MODAL -->
-<div class="modal-bg" id="modal">
+<!-- ADD RATE MODAL -->
+<div class="modal-bg" id="rateModal">
 <div class="modal">
-  <div class="modal-title" id="modalTitle">Add buy rate</div>
-  <div class="fg">
-    <div><label>Supplier *</label><input id="fSupplier" placeholder="e.g. ADSERVICE"></div>
-    <div><label>Service type *</label>
-      <select id="fType">
-        <option value="">Select...</option>
-        <option>Transfer</option><option>Guide</option><option>Restaurant</option>
-        <option>Hotel</option><option>Attraction</option><option>Cruise</option>
-        <option>Concert</option><option>Other</option>
-      </select>
-    </div>
-    <div><label>Destination *</label><input id="fDest" placeholder="e.g. Bratislava"></div>
-    <div><label>Year *</label>
-      <select id="fYear"><option>2026</option><option>2025</option><option>2027</option></select>
-    </div>
-    <div class="full"><label>Service description *</label><input id="fDesc" placeholder="e.g. BTS airport → hotel center, car 1-3 pax"></div>
-    <div><label>Group / pax</label><input id="fGroup" placeholder="e.g. 1-3, group, 20+"></div>
-    <div><label>Buy price (EUR) *</label><input type="number" id="fPrice" step="0.01" placeholder="0.00"></div>
-    <div><label>Unit</label>
-      <select id="fUnit">
+  <div class="modal-title" id="rateModalTitle">Add rate</div>
+  <input type="hidden" id="rSupplierId">
+  <input type="hidden" id="rRateId">
+  <div class="form-grid">
+    <div class="form-group full"><label>Service / route description *</label><input id="rDesc" placeholder="e.g. BTS Airport → Hotel center, car"></div>
+    <div class="form-group"><label>Group / pax</label><input id="rGroup" placeholder="e.g. 1-3 pax, group"></div>
+    <div class="form-group"><label>Buy price (EUR) *</label><input type="number" id="rPrice" step="0.01" placeholder="0.00"></div>
+    <div class="form-group"><label>Unit</label>
+      <select id="rUnit">
         <option>per vehicle/service</option><option>per person</option>
         <option>per group</option><option>per room/night</option><option>per hour</option>
       </select>
     </div>
-    <div><label>Valid from</label><input type="date" id="fFrom"></div>
-    <div><label>Valid to</label><input type="date" id="fTo"></div>
-    <div class="full"><label>Notes / conditions</label><textarea id="fNotes" placeholder="e.g. Incl. VAT, +9% service, 20+1 FOC"></textarea></div>
+    <div class="form-group"><label>Valid from</label><input type="date" id="rFrom"></div>
+    <div class="form-group"><label>Valid to</label><input type="date" id="rTo"></div>
+    <div class="form-group full"><label>Notes / conditions</label><textarea id="rNotes" placeholder="e.g. Incl. VAT, 20+1 FOC, +10% service charge"></textarea></div>
+    <div class="form-group full"><label>Section heading (optional)</label><input id="rSection" placeholder="e.g. Vienna routes, Airport transfers"></div>
   </div>
-  <div class="mac">
+  <div class="modal-actions">
     <button class="btn" onclick="closeModal()">Cancel</button>
-    <button class="btn btn-success" id="saveBtn" onclick="saveRate()">Save rate</button>
+    <button class="btn btn-green" onclick="saveRate()">Save rate</button>
   </div>
 </div>
 </div>
+
+<!-- UPLOAD PDF MODAL -->
+<div class="modal-bg" id="pdfModal">
+<div class="modal">
+  <div class="modal-title">Upload rate document</div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Upload the original PDF or Word file for this supplier. It will be stored and displayed alongside the rates.</p>
+  <input type="hidden" id="pdfSupplierId">
+  <div class="form-group" style="margin-bottom:16px">
+    <label>Select file (PDF recommended)</label>
+    <input type="file" id="pdfFile" accept=".pdf,.doc,.docx,.xls,.xlsx">
+  </div>
+  <div id="pdfProgress" style="display:none;font-size:13px;color:var(--blue)">Uploading...</div>
+  <div class="modal-actions">
+    <button class="btn" onclick="closePdfModal()">Cancel</button>
+    <button class="btn btn-primary" onclick="uploadPdf()">Upload document</button>
+  </div>
+</div>
+</div>
+
+<div class="status-bar" id="statusBar"></div>
 
 <script>
-const SUPABASE_URL = 'https://dwinbhzqwghsejjbfsxa.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3aW5iaHpxd2doc2VqamJmc3hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MjAzNjMsImV4cCI6MjA5MjE5NjM2M30.ZStkPwoQQtAARmcd0JfIHmQzLVIQwYMBNGjoxFy8KKE';
-const API = SUPABASE_URL + '/rest/v1/rates';
-const HEADERS = {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
+const SB_URL='https://dwinbhzqwghsejjbfsxa.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3aW5iaHpxd2doc2VqamJmc3hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MjAzNjMsImV4cCI6MjA5MjE5NjM2M30.ZStkPwoQQtAARmcd0JfIHmQzLVIQwYMBNGjoxFy8KKE';
+const H={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
 
-const TYPES=['All','Transfer','Guide','Restaurant','Hotel','Attraction','Cruise','Concert','Other'];
-const BCLS={Transfer:'b-transfer',Guide:'b-guide',Restaurant:'b-restaurant',Hotel:'b-hotel',Attraction:'b-attraction',Cruise:'b-cruise',Concert:'b-concert',Other:'b-other'};
+const CATS={
+  Transfer:{icon:'🚌',color:'#0a4478',bg:'#ddeefb'},
+  Guide:{icon:'🎤',color:'#1a5c2e',bg:'#ddf0e3'},
+  Restaurant:{icon:'🍽️',color:'#7a4410',bg:'#fef0dc'},
+  Hotel:{icon:'🏨',color:'#3d2a8a',bg:'#ebe8fd'},
+  Attraction:{icon:'🏛️',color:'#7a2a18',bg:'#fde8e2'},
+  Cruise:{icon:'🚢',color:'#0a5040',bg:'#d8f0eb'},
+  Concert:{icon:'🎶',color:'#7a1e4a',bg:'#fce8f2'},
+  Other:{icon:'📦',color:'#444',bg:'#eeede8'}
+};
 
-const SEED_DATA=[
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel center, car',grp:'1-3 pax',price:16,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel center, van',grp:'4-7 pax',price:24,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Bratislava',description:'BTS city transfer up to 3hrs, car',grp:'1-3 pax',price:100,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Bratislava',description:'BTS city transfer up to 3hrs, van',grp:'4-7 pax',price:120,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Vienna',description:'Vienna airport → BTS hotel, car',grp:'1-3 pax',price:50,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Vienna',description:'Vienna airport → BTS hotel, van',grp:'4-7 pax',price:70,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Vienna',description:'Vienna city center → BTS hotel, car',grp:'1-3 pax',price:75,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Vienna',description:'Vienna city center → BTS hotel, van',grp:'4-7 pax',price:90,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Budapest',description:'Bratislava → Budapest, car',grp:'1-3 pax',price:198,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Budapest',description:'Bratislava → Budapest, van',grp:'4-7 pax',price:235,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Piešťany',description:'Bratislava → Piešťany, car',grp:'1-3 pax',price:100,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Piešťany',description:'Bratislava → Piešťany, van',grp:'4-7 pax',price:115,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Bratislava',description:'1hr BTS city tour, car',grp:'1-3 pax',price:26,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Bratislava',description:'1hr BTS city tour, van',grp:'4-7 pax',price:36,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Bratislava',description:'Small Carpathians tour 6hrs, car',grp:'1-3 pax',price:156,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Bratislava',description:'Small Carpathians tour 6hrs, van',grp:'4-7 pax',price:174,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Bratislava',description:'Daily rate 10hrs/250km, car',grp:'1-3 pax',price:360,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'250km limit, incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Bratislava',description:'Daily rate 10hrs/250km, van',grp:'4-7 pax',price:390,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'250km limit, incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Vienna',description:'Private day trip Vienna→BTS 9hrs, car',grp:'1-3 pax',price:200,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'ADSERVICE',type:'Transfer',dest:'Vienna',description:'Private day trip Vienna→BTS 9hrs, van',grp:'4-7 pax',price:249,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'GTLM Limo',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel, car',grp:'1-3 pax',price:20,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'GTLM Limo',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel, van',grp:'4-8 pax',price:30,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'GTLM Limo',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel, minibus',grp:'15-19 pax',price:96,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'GTLM Limo',type:'Transfer',dest:'Bratislava',description:'BTS city transfer 3hrs, car',grp:'1-3 pax',price:105,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'GTLM Limo',type:'Transfer',dest:'Bratislava',description:'BTS city transfer 3hrs, van',grp:'4-8 pax',price:120,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'GTLM Limo',type:'Transfer',dest:'Vienna',description:'Vienna airport → BTS, car',grp:'1-3 pax',price:50,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'GTLM Limo',type:'Transfer',dest:'Vienna',description:'Vienna city center → BTS, car',grp:'1-3 pax',price:80,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'GTLM Limo',type:'Transfer',dest:'Budapest',description:'Bratislava → Budapest, car',grp:'1-3 pax',price:198,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'GTLM Limo',type:'Transfer',dest:'Prague',description:'Bratislava → Prague, car',grp:'1-3 pax',price:315,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'GTLM Limo',type:'Transfer',dest:'Piešťany',description:'Bratislava → Piešťany, car',grp:'1-3 pax',price:103,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Regio Group',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel, car',grp:'1-3 pax',price:20,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+VAT'},
-{year:'2026',supplier:'Regio Group',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel, van',grp:'4-8 pax',price:30,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+VAT'},
-{year:'2026',supplier:'Regio Group',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel, minibus 9-14',grp:'9-14 pax',price:75,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+VAT'},
-{year:'2026',supplier:'Regio Group',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel, bus 45+',grp:'45+ pax',price:120,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+VAT'},
-{year:'2026',supplier:'Regio Group',type:'Transfer',dest:'Bratislava',description:'BTS city transfer 3hrs, car',grp:'1-3 pax',price:80,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+VAT'},
-{year:'2026',supplier:'Regio Group',type:'Transfer',dest:'Vienna',description:'Vienna airport → BTS, car',grp:'1-3 pax',price:55,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Regio Group',type:'Transfer',dest:'Budapest',description:'Bratislava → Budapest, car',grp:'1-3 pax',price:230,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Regio Group',type:'Transfer',dest:'Prague',description:'Bratislava → Prague, car',grp:'1-3 pax',price:360,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Satur Transport',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel, car M/E class',grp:'1-3 pax',price:45,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT, Skoda/VW Passat'},
-{year:'2026',supplier:'Satur Transport',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel, minibus 7',grp:'7 pax',price:55,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'Satur Transport',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel, bus 49',grp:'49 pax',price:210,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'Satur Transport',type:'Transfer',dest:'Bratislava',description:'BTS city 3hrs, car',grp:'1-3 pax',price:84,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'Satur Transport',type:'Transfer',dest:'Vienna',description:'Vienna airport → BTS, car',grp:'1-3 pax',price:70,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Satur Transport',type:'Transfer',dest:'Budapest',description:'Bratislava → Budapest, car',grp:'1-3 pax',price:280,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Satur Transport',type:'Transfer',dest:'Prague',description:'Bratislava → Prague, car',grp:'1-3 pax',price:430,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Blaguss SK',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel, bus 20',grp:'20 pax',price:185,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Blaguss SK',type:'Transfer',dest:'Bratislava',description:'BTS airport → hotel, bus 49',grp:'49 pax',price:210,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Blaguss SK',type:'Transfer',dest:'Bratislava',description:'BTS city 2hrs, bus 20',grp:'20 pax',price:260,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+50 EUR each extra hr'},
-{year:'2026',supplier:'Blaguss SK',type:'Transfer',dest:'Vienna',description:'Vienna airport → BTS, bus 20',grp:'20 pax',price:350,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Blaguss SK',type:'Transfer',dest:'Budapest',description:'Bratislava → Budapest, bus 20',grp:'20 pax',price:650,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Blaguss SK',type:'Transfer',dest:'Prague',description:'Bratislava → Prague, bus 20',grp:'20 pax',price:920,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Blaguss Vienna',type:'Transfer',dest:'Vienna',description:'Transfer within Vienna, bus 20',grp:'20 pax',price:239,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. 10% VAT'},
-{year:'2026',supplier:'Blaguss Vienna',type:'Transfer',dest:'Vienna',description:'Transfer within Vienna, bus 50',grp:'50 pax',price:290,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. 10% VAT'},
-{year:'2026',supplier:'Blaguss Vienna',type:'Transfer',dest:'Vienna',description:'Vienna Airport transfer, bus 20',grp:'20 pax',price:273,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. 30min parking'},
-{year:'2026',supplier:'Blaguss Vienna',type:'Transfer',dest:'Bratislava',description:'Transfer Bratislava, bus 20',grp:'20 pax',price:447,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Blaguss Vienna',type:'Transfer',dest:'Budapest',description:'Transfer Budapest, bus 20',grp:'20 pax',price:976,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Blaguss Vienna',type:'Transfer',dest:'Salzburg',description:'Transfer Salzburg, bus 20',grp:'20 pax',price:1220,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+parking 94 EUR'},
-{year:'2026',supplier:'Blaguss Vienna',type:'Transfer',dest:'Vienna',description:'Bus available city 4hrs, bus 20',grp:'20 pax',price:355,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Blaguss Vienna',type:'Transfer',dest:'Vienna',description:'Bus available city 8hrs, bus 20',grp:'20 pax',price:625,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Blaguss Vienna',type:'Transfer',dest:'Vienna',description:'Day trip Wachau 8hrs, bus 20',grp:'20 pax',price:816,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. parking Wachau'},
-{year:'2026',supplier:'Blaguss Vienna',type:'Transfer',dest:'Budapest',description:'Day trip Budapest 12hrs, bus 20',grp:'20 pax',price:1250,unit:'per vehicle/service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Guide agency BTS',type:'Guide',dest:'Bratislava',description:'Guide EN/DE – 1hr, 1 person',grp:'1 pax',price:26,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+17 EUR/started hr'},
-{year:'2026',supplier:'Guide agency BTS',type:'Guide',dest:'Bratislava',description:'Guide EN/DE – 1hr, 2 persons',grp:'2 pax',price:34,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+17 EUR/started hr'},
-{year:'2026',supplier:'Guide agency BTS',type:'Guide',dest:'Bratislava',description:'Guide EN/DE – 1hr, 3-5 persons',grp:'3-5 pax',price:40,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+17 EUR/started hr'},
-{year:'2026',supplier:'Guide agency BTS',type:'Guide',dest:'Bratislava',description:'Guide EN/DE – 1hr, 6-9 persons',grp:'6-9 pax',price:44,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+17 EUR/started hr'},
-{year:'2026',supplier:'Guide agency BTS',type:'Guide',dest:'Bratislava',description:'Guide EN/DE – 1hr, 10+ persons',grp:'10+ pax',price:46,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+17 EUR/started hr'},
-{year:'2026',supplier:'Guide agency BTS',type:'Guide',dest:'Bratislava',description:'Guide EN/DE – 2hrs flat',grp:'any',price:55,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+17 EUR/started hr'},
-{year:'2026',supplier:'Guide agency BTS',type:'Guide',dest:'Bratislava',description:'Guide EN/DE – 3hrs flat',grp:'any',price:78,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+17 EUR/started hr'},
-{year:'2026',supplier:'Guide agency BTS',type:'Guide',dest:'Bratislava',description:'Guide EN/DE – 5hrs flat',grp:'any',price:110,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+17 EUR/started hr'},
-{year:'2026',supplier:'Guide agency BTS',type:'Guide',dest:'Bratislava',description:'Guide EN/DE – 6hrs flat',grp:'any',price:125,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+17 EUR/started hr'},
-{year:'2026',supplier:'Guide agency BTS',type:'Guide',dest:'Bratislava',description:'Guide OTHER language – 1hr, 1 person',grp:'1 pax',price:44,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+25 EUR/started hr'},
-{year:'2026',supplier:'Guide agency BTS',type:'Guide',dest:'Bratislava',description:'Guide OTHER language – 1hr, 2 persons',grp:'2 pax',price:50,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+25 EUR/started hr'},
-{year:'2026',supplier:'Guide agency BTS',type:'Guide',dest:'Bratislava',description:'Guide OTHER language – 6hrs flat',grp:'any',price:210,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+25 EUR/started hr'},
-{year:'2026',supplier:'BOTROS by VIT',type:'Guide',dest:'Vienna',description:'Guide D/E/I – 3hrs city tour',grp:'group',price:220,unit:'per service',valid_from:'2026-01-02',valid_to:'2027-01-01',notes:'Other languages on request'},
-{year:'2026',supplier:'BOTROS by VIT',type:'Guide',dest:'Vienna',description:'Guide D/E/I – 2hrs walking tour',grp:'group',price:220,unit:'per service',valid_from:'2026-01-02',valid_to:'2027-01-01',notes:''},
-{year:'2026',supplier:'BOTROS by VIT',type:'Guide',dest:'Vienna',description:'Guide D/E/I – 6hrs city tour',grp:'group',price:440,unit:'per service',valid_from:'2026-01-02',valid_to:'2027-01-01',notes:''},
-{year:'2026',supplier:'Slovak Lines Tours',type:'Guide',dest:'Bratislava',description:'BTS Classical Walking Tour 1hr – EN/DE',grp:'min 2 pax',price:20.25,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'B2B rate'},
-{year:'2026',supplier:'Slovak Lines Tours',type:'Guide',dest:'Bratislava',description:'BTS Classical Walking Tour 1hr – other lang',grp:'min 2 pax',price:27.75,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'B2B rate'},
-{year:'2026',supplier:'Slovak Lines Tours',type:'Guide',dest:'Bratislava',description:'BTS Grand City Tour 3hrs – EN/DE (car+guide)',grp:'min 2 pax',price:67.50,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Includes car'},
-{year:'2026',supplier:'Slovak Lines Tours',type:'Guide',dest:'Bratislava',description:'BTS Grand City Tour+Devín 5hrs – EN/DE',grp:'min 2 pax',price:123.75,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Includes car'},
-{year:'2026',supplier:'Slovak Lines Tours',type:'Guide',dest:'Bratislava',description:'Small Carpathian Wine Tour 6.5hrs – EN/DE',grp:'min 2 pax',price:171.75,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Car+guide+3 wine tastings'},
-{year:'2026',supplier:'Slovak Lines Tours',type:'Guide',dest:'Bratislava',description:'BTS by Night 1.5hr + Pulitzer – EN/DE',grp:'min 2 pax',price:44.25,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Slovak Lines Tours',type:'Guide',dest:'Bratislava',description:'Culinary Tour 3hrs – EN/DE',grp:'min 2 pax',price:82.50,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. tastings'},
-{year:'2026',supplier:'Slovak Lines Tours',type:'Guide',dest:'Slovakia',description:'Day trip Small Fatra + Žilina – EN/ES/RU',grp:'min 2 pax',price:168.75,unit:'per service',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'13.5hrs, car+guide'},
-{year:'2026',supplier:'Cafe Stefanka',type:'Restaurant',dest:'Bratislava',description:'Group menu 1 – 3-course (kohút vývar, kurací steak, štrúdľa)',grp:'group',price:20.40,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Groups only'},
-{year:'2026',supplier:'Cafe Stefanka',type:'Restaurant',dest:'Bratislava',description:'Group menu 2 – 3-course (hermelín, teľací rezeň, štrúdľa)',grp:'group',price:22.40,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Groups only'},
-{year:'2026',supplier:'Cafe Stefanka',type:'Restaurant',dest:'Bratislava',description:'Group menu 3 – 3-course (cesnačka, losos, palacinky)',grp:'group',price:24.40,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Groups only'},
-{year:'2026',supplier:'Cafe Stefanka',type:'Restaurant',dest:'Bratislava',description:'Vege group menu 4 – 3-course',grp:'group',price:20.40,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Groups only'},
-{year:'2026',supplier:'Cafe Stefanka / Pulitzer',type:'Restaurant',dest:'Bratislava',description:'Dinner with folk music – menu+drinks+band',grp:'25+ pax',price:37.90,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Best rate 25+ pax; 12-15 pax=44.90'},
-{year:'2026',supplier:'PLAC Bejsik',type:'Restaurant',dest:'Bratislava',description:'Bejsik Menu 1/2/3 – 3-course',grp:'min 10 pax',price:39,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'20+1 FOC, +10% service, 2 menus max'},
-{year:'2026',supplier:'PLAC Biznis',type:'Restaurant',dest:'Bratislava',description:'Biznis Menu 1/2/3 – 4-course',grp:'min 10 pax',price:49,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'20+1 FOC, +10% service'},
-{year:'2026',supplier:'Zylinder',type:'Restaurant',dest:'Bratislava',description:'Zylinder Menu 1/2/3 – 3-course',grp:'min 10 pax',price:29,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'20+1 FOC, +10% service'},
-{year:'2026',supplier:'Bratislavská reštaurácia',type:'Restaurant',dest:'Bratislava',description:'Menu A – Traditional Slovak (cabbage soup, Slovak plate)',grp:'min 20 pax',price:21,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'21st person free, +5% service'},
-{year:'2026',supplier:'Bratislavská reštaurácia',type:'Restaurant',dest:'Bratislava',description:'Menu B – Chicken steak with rice',grp:'min 20 pax',price:21,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'21st person free'},
-{year:'2026',supplier:'Bratislavská reštaurácia',type:'Restaurant',dest:'Bratislava',description:'Menu C – Pork cordon bleu, chocolate mousse',grp:'min 20 pax',price:23,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'21st person free'},
-{year:'2026',supplier:'Bratislavská reštaurácia',type:'Restaurant',dest:'Bratislava',description:'Menu D – Garlic soup in bread, pork medallions',grp:'min 20 pax',price:24.50,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'21st person free'},
-{year:'2026',supplier:'Bratislavská reštaurácia',type:'Restaurant',dest:'Bratislava',description:'Menu E – Vegetarian/vegan',grp:'min 20 pax',price:20,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'21st person free'},
-{year:'2026',supplier:'Bratislavská reštaurácia',type:'Restaurant',dest:'Bratislava',description:'Menu F – Special Monastic beer tasting',grp:'min 20 pax',price:28,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. brewery tour 25min'},
-{year:'2026',supplier:'BFS Buffet',type:'Restaurant',dest:'Bratislava',description:'Buffet Working – groups 100+ pax',grp:'100+ pax',price:47,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT & service, no drinks'},
-{year:'2026',supplier:'BFS Buffet',type:'Restaurant',dest:'Bratislava',description:'Buffet International – groups 100+ pax',grp:'100+ pax',price:52,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT & service, no drinks'},
-{year:'2026',supplier:'BFS Buffet',type:'Restaurant',dest:'Bratislava',description:'Buffet Gurman – groups 100+ pax',grp:'100+ pax',price:59,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT & service, no drinks'},
-{year:'2026',supplier:'UFO Restaurant',type:'Restaurant',dest:'Bratislava',description:'Lunch 3-course menu + observation deck',grp:'min 10 pax',price:55,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+9% service charge, 21st FOC'},
-{year:'2026',supplier:'UFO Restaurant',type:'Restaurant',dest:'Bratislava',description:'Dinner 3-course + observation deck',grp:'min 10 pax',price:75,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+9% service charge'},
-{year:'2026',supplier:'UFO Restaurant',type:'Restaurant',dest:'Bratislava',description:'Dinner 4-course + observation deck',grp:'min 10 pax',price:85,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+9% service charge'},
-{year:'2026',supplier:'UFO Restaurant',type:'Restaurant',dest:'Bratislava',description:'Dinner 5-course + observation deck',grp:'min 10 pax',price:95,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+9% service charge'},
-{year:'2026',supplier:'Vinum Galéria Bozen',type:'Restaurant',dest:'Pezinok',description:'Main course – chicken steak / pork tenderloin',grp:'group',price:13.90,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Wine restaurant à la carte'},
-{year:'2026',supplier:'Vinum Galéria Bozen',type:'Restaurant',dest:'Pezinok',description:'Main course – confit duck / beef cheeks',grp:'group',price:16.80,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Vinum Galéria Bozen',type:'Restaurant',dest:'Pezinok',description:'Wine degustation per person (10+ pax)',grp:'10+ pax',price:2.50,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'+50 EUR sommelier fee/group'},
-{year:'2026',supplier:'12 Apostelkeller',type:'Restaurant',dest:'Vienna',description:'Menu 1 – Black pudding, curd strudel',grp:'group',price:19.90,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'12 Apostelkeller',type:'Restaurant',dest:'Vienna',description:'Menu 4 veg – Eiermockerl',grp:'group',price:18.90,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'12 Apostelkeller',type:'Restaurant',dest:'Vienna',description:'Menu 7 – Breaded Schnitzel, apple strudel',grp:'group',price:23.90,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'12 Apostelkeller',type:'Restaurant',dest:'Vienna',description:'Menu 14 – Tafelspitz (classic beef)',grp:'group',price:33.90,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'12 Apostelkeller',type:'Restaurant',dest:'Vienna',description:'Menu 16 – Veal Schnitzel (original veal)',grp:'group',price:38.90,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. VAT'},
-{year:'2026',supplier:'12 Apostelkeller',type:'Restaurant',dest:'Vienna',description:'House platter + 2x wine per person',grp:'min 2 pax',price:27,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'54 EUR/2 persons'},
-{year:'2026',supplier:'12 Apostelkeller',type:'Restaurant',dest:'Vienna',description:'Wine tasting Heuriger',grp:'group',price:19.90,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'4 wines + Viennese spreads'},
-{year:'2026',supplier:'12 Apostelkeller',type:'Restaurant',dest:'Vienna',description:'Wine tasting Gourmet',grp:'group',price:34.90,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'4 premium wines + gourmet platter'},
-{year:'2026',supplier:'BOTROS by VIT',type:'Restaurant',dest:'Vienna',description:'Restaurant standard 3-course (bread+water)',grp:'group',price:29,unit:'per person',valid_from:'2026-01-02',valid_to:'2027-01-01',notes:'Excl. drinks'},
-{year:'2026',supplier:'BOTROS by VIT',type:'Restaurant',dest:'Vienna',description:'Restaurant typical 3-course',grp:'group',price:32,unit:'per person',valid_from:'2026-01-02',valid_to:'2027-01-01',notes:'Excl. drinks'},
-{year:'2026',supplier:'Hotel Mooons Vienna',type:'Hotel',dest:'Vienna',description:'DBL/BB – Jan–Mar 2026',grp:'',price:68,unit:'per room/night',valid_from:'2026-01-01',valid_to:'2026-03-31',notes:'Breakfast incl.'},
-{year:'2026',supplier:'Hotel Mooons Vienna',type:'Hotel',dest:'Vienna',description:'SGL/BB – Jan–Mar 2026',grp:'',price:122,unit:'per room/night',valid_from:'2026-01-01',valid_to:'2026-03-31',notes:'Breakfast incl.'},
-{year:'2026',supplier:'Hotel Mooons Vienna',type:'Hotel',dest:'Vienna',description:'DBL/BB – Apr 2026',grp:'',price:77,unit:'per room/night',valid_from:'2026-04-01',valid_to:'2026-04-30',notes:''},
-{year:'2026',supplier:'Hotel Mooons Vienna',type:'Hotel',dest:'Vienna',description:'DBL/BB – May–Jun 2026',grp:'',price:80,unit:'per room/night',valid_from:'2026-05-01',valid_to:'2026-06-30',notes:''},
-{year:'2026',supplier:'Hotel Mooons Vienna',type:'Hotel',dest:'Vienna',description:'DBL/BB – Jul–Aug 2026',grp:'',price:79,unit:'per room/night',valid_from:'2026-07-01',valid_to:'2026-08-31',notes:''},
-{year:'2026',supplier:'Hotel Mooons Vienna',type:'Hotel',dest:'Vienna',description:'DBL/BB – Sep–Oct & Dec 2026',grp:'',price:82,unit:'per room/night',valid_from:'2026-09-01',valid_to:'2026-12-31',notes:''},
-{year:'2026',supplier:'Hotel Mooons Vienna',type:'Hotel',dest:'Vienna',description:'DBL/BB – Nov 2026',grp:'',price:70,unit:'per room/night',valid_from:'2026-11-01',valid_to:'2026-11-30',notes:''},
-{year:'2026',supplier:'Hotel Mooons Vienna',type:'Hotel',dest:'Vienna',description:'DBL/BB – Event dates (trade fairs)',grp:'',price:114,unit:'per room/night',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'MLOS 2 nights, check specific dates'},
-{year:'2026',supplier:'Mamaison Andrássy Budapest',type:'Hotel',dest:'Budapest',description:'Classic SGL/BB – Jan–Mar 2026',grp:'',price:98,unit:'per room/night',valid_from:'2026-01-04',valid_to:'2026-03-31',notes:'Incl. 5% VAT+4% city tax+BB'},
-{year:'2026',supplier:'Mamaison Andrássy Budapest',type:'Hotel',dest:'Budapest',description:'Classic DBL/BB – Jan–Mar 2026',grp:'',price:113,unit:'per room/night',valid_from:'2026-01-04',valid_to:'2026-03-31',notes:''},
-{year:'2026',supplier:'Mamaison Andrássy Budapest',type:'Hotel',dest:'Budapest',description:'Classic SGL/BB – May–Jun & Sep–Oct 2026',grp:'',price:128,unit:'per room/night',valid_from:'2026-05-01',valid_to:'2026-10-31',notes:'High season'},
-{year:'2026',supplier:'Mamaison Andrássy Budapest',type:'Hotel',dest:'Budapest',description:'Classic DBL/BB – May–Jun & Sep–Oct 2026',grp:'',price:143,unit:'per room/night',valid_from:'2026-05-01',valid_to:'2026-10-31',notes:'High season'},
-{year:'2026',supplier:'BOTROS by VIT',type:'Attraction',dest:'Vienna',description:'Schönbrunn Palace entrance',grp:'',price:34,unit:'per person',valid_from:'2026-01-02',valid_to:'2027-01-01',notes:''},
-{year:'2026',supplier:'BOTROS by VIT',type:'Attraction',dest:'Vienna',description:'Hofburg Palace entrance',grp:'',price:27,unit:'per person',valid_from:'2026-01-02',valid_to:'2027-01-01',notes:''},
-{year:'2026',supplier:'BOTROS by VIT',type:'Attraction',dest:'Vienna',description:'Upper Belvedere Palace entrance',grp:'',price:20.50,unit:'per person',valid_from:'2026-01-02',valid_to:'2027-01-01',notes:''},
-{year:'2026',supplier:'BOTROS by VIT',type:'Attraction',dest:'Vienna',description:'Secession entrance',grp:'',price:13,unit:'per person',valid_from:'2026-01-02',valid_to:'2027-01-01',notes:''},
-{year:'2026',supplier:'Galéria Multium',type:'Attraction',dest:'Bratislava',description:'Entry adult',grp:'',price:3.75,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Published 5 EUR; closed 24-26.12'},
-{year:'2026',supplier:'Galéria Multium',type:'Attraction',dest:'Bratislava',description:'Entry child (to 15 yrs)',grp:'',price:2.25,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Published 3 EUR'},
-{year:'2026',supplier:'Galéria Multium',type:'Attraction',dest:'Bratislava',description:'Family 2+1',grp:'',price:9,unit:'per group',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Published 12 EUR'},
-{year:'2026',supplier:'Galéria Multium',type:'Attraction',dest:'Bratislava',description:'Family 2+2',grp:'',price:10.50,unit:'per group',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Published 14 EUR'},
-{year:'2026',supplier:'UFO Bratislava',type:'Attraction',dest:'Bratislava',description:'Bratislava by day – viewpoint + soft drink',grp:'min 10 pax',price:12,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. 19% VAT'},
-{year:'2026',supplier:'UFO Bratislava',type:'Attraction',dest:'Bratislava',description:'Bratislava by night – viewpoint + cocktail',grp:'min 10 pax',price:18,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. 23% VAT'},
-{year:'2026',supplier:'UFO Bratislava',type:'Attraction',dest:'Bratislava',description:'Sweet Bratislava – viewpoint + drink + dessert',grp:'min 10 pax',price:19,unit:'per person',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'Incl. 5% VAT'},
-{year:'2026',supplier:'UFO Bratislava',type:'Attraction',dest:'Bratislava',description:'Skywalk 1hr adrenaline experience',grp:'10-12 pax',price:700,unit:'per group',valid_from:'2026-01-01',valid_to:'2026-12-31',notes:'With professional instructor'},
-{year:'2026',supplier:'Schönbrunn Palace Concerts',type:'Concert',dest:'Vienna',description:'Concert ticket – Cat C (regular season)',grp:'',price:58,unit:'per person',valid_from:'2026-04-01',valid_to:'2026-12-23',notes:'25% discount from published price'},
-{year:'2026',supplier:'Schönbrunn Palace Concerts',type:'Concert',dest:'Vienna',description:'Concert ticket – Cat B (regular season)',grp:'',price:85,unit:'per person',valid_from:'2026-04-01',valid_to:'2026-12-23',notes:'25% discount'},
-{year:'2026',supplier:'Schönbrunn Palace Concerts',type:'Concert',dest:'Vienna',description:'Concert ticket – Cat A (regular season)',grp:'',price:95,unit:'per person',valid_from:'2026-04-01',valid_to:'2026-12-23',notes:'25% discount'},
-{year:'2026',supplier:'Schönbrunn Palace Concerts',type:'Concert',dest:'Vienna',description:'Concert ticket – VIP (regular season)',grp:'',price:135,unit:'per person',valid_from:'2026-04-01',valid_to:'2026-12-23',notes:'Priority access + sparkling wine'},
-{year:'2026',supplier:'Schönbrunn Palace Concerts',type:'Concert',dest:'Vienna',description:'Pkg 1: Dinner & Concert – Cat C (regular)',grp:'',price:105,unit:'per person',valid_from:'2026-01-02',valid_to:'2026-12-23',notes:'15% discount; 3-course dinner + concert'},
-{year:'2026',supplier:'Schönbrunn Palace Concerts',type:'Concert',dest:'Vienna',description:'Pkg 2: Palace Tour & Concert – Cat C',grp:'',price:102,unit:'per person',valid_from:'2026-01-02',valid_to:'2026-12-23',notes:'15% discount; audio guide + concert'},
-{year:'2026',supplier:'Schönbrunn Palace Concerts',type:'Concert',dest:'Vienna',description:'Pkg 3: Palace Tour + Dinner + Concert – Cat C',grp:'',price:147,unit:'per person',valid_from:'2026-01-02',valid_to:'2026-12-23',notes:'15% discount'},
-{year:'2026',supplier:'Schönbrunn Palace Concerts',type:'Concert',dest:'Vienna',description:'Christmas concert – Cat C (Dec 25-30)',grp:'',price:68,unit:'per person',valid_from:'2026-12-25',valid_to:'2026-12-30',notes:''},
-{year:'2026',supplier:'Twin City Liner (Flora Tour)',type:'Cruise',dest:'Bratislava',description:'BTS → Vienna or v.v. – economy, pre-season',grp:'min 15 pax',price:34,unit:'per person',valid_from:'2026-03-20',valid_to:'2026-04-30',notes:'5% commission; Fri/Sat/Sun/holiday'},
-{year:'2026',supplier:'Twin City Liner (Flora Tour)',type:'Cruise',dest:'Bratislava',description:'BTS → Vienna or v.v. – economy, main season',grp:'min 15 pax',price:34,unit:'per person',valid_from:'2026-05-01',valid_to:'2026-11-02',notes:'Tue-Thu; Fri/Sat/holiday = 39 EUR'},
-{year:'2026',supplier:'Twin City Liner (Flora Tour)',type:'Cruise',dest:'Bratislava',description:'BTS → Vienna – Red Ticket economy',grp:'min 15 pax',price:25,unit:'per person',valid_from:'2026-03-20',valid_to:'2026-11-02',notes:'One-way, limited availability'},
-];
+let suppliers=[];let rates=[];
+let curCat='';let curSupplier=null;
 
-let rates=[];let activeType='All';let editId=null;let curYear='2026';
-
-function setStatus(msg,cls=''){const el=document.getElementById('syncStatus');el.textContent=msg;el.className='sync-status'+(cls?' '+cls:'');}
-
-async function apiFetch(path,opts={}){
-  const r=await fetch(API+path,{headers:{...HEADERS,...(opts.headers||{})},method:opts.method||'GET',body:opts.body});
+// API helpers
+async function api(path,opts={}){
+  const r=await fetch(SB_URL+'/rest/v1/'+path,{headers:{...H,...(opts.headers||{})},method:opts.method||'GET',body:opts.body});
   if(!r.ok){const t=await r.text();throw new Error(t);}
-  return opts.method&&opts.method!=='GET'?r:r.json();
+  return(opts.method&&opts.method!=='GET'&&opts.method!=='PATCH')?r:r.json();
+}
+async function storageUpload(bucket,path,file){
+  const r=await fetch(SB_URL+'/storage/v1/object/'+bucket+'/'+path,{method:'POST',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':file.type,'x-upsert':'true'},body:file});
+  if(!r.ok)throw new Error(await r.text());
+  return SB_URL+'/storage/v1/object/public/'+bucket+'/'+path;
 }
 
-async function loadRates(){
-  setStatus('Loading...','loading');
+function status(msg,dur=2500){
+  const el=document.getElementById('statusBar');el.textContent=msg;el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),dur);
+}
+
+// LOAD DATA
+async function loadAll(){
   try{
-    rates=await apiFetch('?order=supplier.asc,type.asc,dest.asc&limit=1000');
-    if(rates.length===0){document.getElementById('seedBanner').style.display='flex';}
-    else{document.getElementById('seedBanner').style.display='none';}
-    setStatus('✓ Live – '+rates.length+' rates');
-    renderYears();renderStats();renderStabs();renderTable();populateSupplierFilter();
-  }catch(e){setStatus('Connection error','error');console.error(e);}
+    [suppliers,rates]=await Promise.all([
+      api('suppliers?order=supplier.asc'),
+      api('rates?order=section.asc,description.asc&limit=2000')
+    ]);
+    document.getElementById('syncBadge').textContent='✓ '+suppliers.length+' suppliers';
+    renderHome();
+    renderAdminList();
+  }catch(e){
+    document.getElementById('syncBadge').textContent='⚠ Connection error';
+    document.getElementById('syncBadge').style.color='#c00';
+    console.error(e);
+  }
 }
 
-async function seedDatabase(){
-  setStatus('Loading 156 rates...','loading');
-  document.getElementById('seedBanner').style.display='none';
-  try{
-    // Insert in batches of 50
-    for(let i=0;i<SEED_DATA.length;i+=50){
-      const batch=SEED_DATA.slice(i,i+50);
-      await apiFetch('',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(batch)});
-    }
-    await loadRates();
-  }catch(e){setStatus('Seed error','error');console.error(e);}
+// VIEWS
+function showView(name,extra){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  updateBreadcrumb(name,extra);
 }
 
-function years(){return[...new Set(rates.map(r=>r.year))].sort().reverse();}
-
-function renderYears(){
-  const ys=years();if(!ys.includes(curYear))curYear=ys[0]||'2026';
-  document.getElementById('yearTabs').innerHTML=ys.map(y=>`<button class="ytab${y===curYear?' active':''}" onclick="setYear('${y}')">${y}</button>`).join('');
+function updateBreadcrumb(view,extra){
+  const bc=document.getElementById('breadcrumb');
+  if(view==='home'){bc.innerHTML='';return;}
+  let html='<a onclick="goHome()">Home</a>';
+  if(view==='suppliers'&&curCat){
+    html+='<span class="sep">/</span><span>'+curCat+'</span>';
+  }else if(view==='detail'&&curSupplier){
+    html+='<span class="sep">/</span><a onclick="showCat(\''+curSupplier.type+'\')">'+curSupplier.type+'</a>';
+    html+='<span class="sep">/</span><span>'+curSupplier.supplier+'</span>';
+  }else if(view==='admin'){
+    html+='<span class="sep">/</span><span>Admin</span>';
+  }
+  bc.innerHTML=html;
 }
-function setYear(y){curYear=y;renderYears();renderStats();renderStabs();renderTable();populateSupplierFilter();}
 
-function renderStabs(){
-  const counts={};rates.filter(r=>r.year===curYear).forEach(r=>{counts[r.type]=(counts[r.type]||0)+1;});
-  document.getElementById('stabs').innerHTML=TYPES.map(t=>{
-    const c=t==='All'?rates.filter(r=>r.year===curYear).length:(counts[t]||0);
-    return`<button class="stab${t===activeType?' active':''}" onclick="switchTab('${t}',this)">${t}${c?' ('+c+')':''}</button>`;
+function goHome(){curCat='';curSupplier=null;renderHome();showView('home');}
+function showCat(cat){curCat=cat;renderSuppliers(cat);showView('suppliers');}
+
+// HOME
+function renderHome(){
+  const counts={};
+  suppliers.forEach(s=>{counts[s.type]=(counts[s.type]||0)+1;});
+  const grid=document.getElementById('catGrid');
+  grid.innerHTML=Object.entries(CATS).map(([type,cfg])=>{
+    const c=counts[type]||0;
+    if(c===0)return'';
+    return`<div class="cat-card" onclick="showCat('${type}')">
+      <div class="cat-icon">${cfg.icon}</div>
+      <div class="cat-name">${type}</div>
+      <div class="cat-count">${c} supplier${c!==1?'s':''}</div>
+    </div>`;
   }).join('');
 }
-function switchTab(t,el){activeType=t;document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderTable();}
 
-function populateSupplierFilter(){
-  const ss=[...new Set(rates.filter(r=>r.year===curYear).map(r=>r.supplier))].sort();
-  document.getElementById('filterSupplier').innerHTML='<option value="">All suppliers</option>'+ss.map(s=>`<option>${s}</option>`).join('');
+// SUPPLIER LIST
+function renderSuppliers(cat){
+  const filtered=suppliers.filter(s=>s.type===cat);
+  const cfg=CATS[cat]||CATS.Other;
+  const grid=document.getElementById('supplierGrid');
+  if(!filtered.length){grid.innerHTML='<div class="empty-state"><div class="icon">'+cfg.icon+'</div><p>No suppliers yet in this category.</p></div>';return;}
+  grid.innerHTML=filtered.map(s=>{
+    const rateCount=rates.filter(r=>r.supplier_id===s.id).length;
+    return`<div class="supplier-card" onclick="showDetail(${s.id})">
+      <div class="supplier-info">
+        <div class="supplier-name">${s.supplier}</div>
+        <div class="supplier-meta">${s.dest} · ${rateCount} rate${rateCount!==1?'s':''} · ${s.year}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="badge b-${cat.toLowerCase()}">${cat}</span>
+        <span class="arrow">›</span>
+      </div>
+    </div>`;
+  }).join('');
 }
 
-function filtered(){
-  const q=document.getElementById('searchQ').value.toLowerCase();
-  const fd=document.getElementById('filterDest').value;
-  const fs=document.getElementById('filterSupplier').value;
-  return rates.filter(r=>{
-    if(r.year!==curYear)return false;
-    if(activeType!=='All'&&r.type!==activeType)return false;
-    if(fd&&r.dest!==fd)return false;
-    if(fs&&r.supplier!==fs)return false;
-    if(q){const h=[r.supplier,r.type,r.dest,r.description,r.notes||'',r.grp||''].join(' ').toLowerCase();if(!h.includes(q))return false;}
-    return true;
+// SUPPLIER DETAIL
+function showDetail(id){
+  curSupplier=suppliers.find(s=>s.id===id);
+  if(!curSupplier)return;
+  renderDetail();
+  showView('detail');
+}
+
+function renderDetail(){
+  const s=curSupplier;
+  const supRates=rates.filter(r=>r.supplier_id===s.id);
+  const cfg=CATS[s.type]||CATS.Other;
+
+  // Group rates by section
+  const sections={};
+  supRates.forEach(r=>{
+    const key=r.section||'Rates';
+    if(!sections[key])sections[key]=[];
+    sections[key].push(r);
   });
+
+  const sectionsHTML=Object.entries(sections).map(([sec,rs])=>`
+    <div class="doc-section">
+      <div class="doc-section-title">${sec}</div>
+      ${rs.map(r=>`
+        <div class="rate-row">
+          <div>
+            <div class="rate-desc">${r.description}</div>
+            ${r.grp?`<div class="rate-group">${r.grp}</div>`:''}
+            ${r.notes?`<div class="rate-notes">${r.notes}</div>`:''}
+          </div>
+          <div style="text-align:right">
+            <div class="rate-unit">${r.unit||''}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="rate-price">${Number(r.price).toFixed(2)} €</div>
+          </div>
+        </div>`).join('')}
+    </div>`).join('');
+
+  // PDF section
+  const pdfHTML=`
+    <div class="pdf-section">
+      <div class="pdf-section-title">
+        <span>📄 Original rate document</span>
+        <button class="btn btn-sm btn-ghost" onclick="openPdfUpload(${s.id})">📎 Upload document</button>
+      </div>
+      ${s.pdf_url
+        ?`<iframe class="pdf-embed" src="${s.pdf_url}"></iframe>`
+        :`<div class="pdf-upload-area">
+            <div>No document uploaded yet</div>
+            <label onclick="openPdfUpload(${s.id})">📎 Upload original PDF / Word file</label>
+          </div>`}
+    </div>`;
+
+  document.getElementById('detailContent').innerHTML=`
+    <div class="doc-header">
+      <div>
+        <div class="doc-supplier-name">${s.supplier}</div>
+        <div class="doc-meta">
+          <span class="badge b-${s.type.toLowerCase()}">${s.type}</span>
+          &nbsp;${s.dest} &nbsp;·&nbsp; ${s.year}
+          ${s.notes?'&nbsp;·&nbsp;<span style="color:var(--muted)">'+s.notes+'</span>':''}
+        </div>
+      </div>
+      <div class="doc-actions">
+        <button class="btn btn-sm" onclick="window.print()">🖨 Print</button>
+        <button class="btn btn-sm btn-primary" onclick="openAddRate(${s.id})">+ Add rate</button>
+      </div>
+    </div>
+    ${supRates.length?sectionsHTML:`<div class="empty-state"><div class="icon">📋</div><p>No rates added yet. Click "+ Add rate" to add the first one.</p></div>`}
+    ${pdfHTML}`;
 }
 
-function renderStats(){
-  const yr=rates.filter(r=>r.year===curYear);
-  document.getElementById('statsRow').innerHTML=`
-    <div class="sc"><div class="sc-label">Total rates</div><div class="sc-val">${yr.length}</div></div>
-    <div class="sc"><div class="sc-label">Suppliers</div><div class="sc-val">${[...new Set(yr.map(r=>r.supplier))].length}</div></div>
-    <div class="sc"><div class="sc-label">Service types</div><div class="sc-val">${[...new Set(yr.map(r=>r.type))].length}</div></div>
-    <div class="sc"><div class="sc-label">Destinations</div><div class="sc-val">${[...new Set(yr.map(r=>r.dest))].length}</div></div>`;
+// ADMIN
+function renderAdminList(){
+  const el=document.getElementById('adminSupplierList');
+  if(!suppliers.length){el.innerHTML='<div style="color:var(--muted);font-size:13px">No suppliers yet.</div>';return;}
+  el.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px">
+    <thead><tr style="border-bottom:1px solid var(--border)">
+      <th style="padding:8px;text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase">Supplier</th>
+      <th style="padding:8px;text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase">Type</th>
+      <th style="padding:8px;text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase">Dest</th>
+      <th style="padding:8px;text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase">Rates</th>
+      <th style="padding:8px;text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase">Doc</th>
+      <th></th>
+    </tr></thead>
+    <tbody>${suppliers.map(s=>{
+      const rc=rates.filter(r=>r.supplier_id===s.id).length;
+      return`<tr style="border-bottom:1px solid #f0ede8">
+        <td style="padding:8px;font-weight:600">${s.supplier}</td>
+        <td style="padding:8px"><span class="badge b-${s.type.toLowerCase()}">${s.type}</span></td>
+        <td style="padding:8px;color:var(--muted)">${s.dest}</td>
+        <td style="padding:8px">${rc}</td>
+        <td style="padding:8px">${s.pdf_url?'✅':'—'}</td>
+        <td style="padding:8px;text-align:right">
+          <button class="btn btn-sm" onclick="showDetail(${s.id});showView('detail')" style="margin-right:4px">View</button>
+          <button class="btn btn-sm" style="color:#a00;border-color:#f5c0c0" onclick="deleteSupplier(${s.id})">Delete</button>
+        </td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
 }
 
-function renderTable(){
-  const rows=filtered();renderStabs();
-  document.getElementById('meta').textContent=rows.length+' rate'+(rows.length!==1?'s':'')+' found';
-  document.getElementById('emptyMsg').style.display=rows.length?'none':'block';
-  document.getElementById('rateTable').style.display=rows.length?'':'none';
-  document.getElementById('tbody').innerHTML=rows.map(r=>`<tr>
-    <td style="font-weight:600;white-space:nowrap">${r.supplier}</td>
-    <td><span class="badge ${BCLS[r.type]||'b-other'}">${r.type}</span></td>
-    <td style="white-space:nowrap">${r.dest}</td>
-    <td>${r.description}</td>
-    <td style="color:#888;white-space:nowrap">${r.grp||'—'}</td>
-    <td class="price" style="white-space:nowrap">${Number(r.price).toFixed(2)} €</td>
-    <td style="color:#888;font-size:11px;white-space:nowrap">${r.unit||''}</td>
-    <td style="color:#888;font-size:11px;max-width:180px">${r.notes||'—'}</td>
-    <td style="white-space:nowrap">
-      <button class="btn" style="padding:2px 8px;height:26px;font-size:11px" onclick="editRate(${r.id})">Edit</button>
-      <button class="btn" style="padding:2px 6px;height:26px;font-size:11px;margin-left:3px;color:#a00;border-color:#f5c0c0" onclick="delRate(${r.id})">×</button>
-    </td></tr>`).join('');
+// ADD SUPPLIER
+async function addSupplier(){
+  const supplier=document.getElementById('aSupplier').value.trim();
+  const type=document.getElementById('aType').value;
+  const dest=document.getElementById('aDest').value.trim();
+  const year=document.getElementById('aYear').value;
+  const notes=document.getElementById('aNotes').value.trim();
+  if(!supplier||!type||!dest){alert('Please fill required fields');return;}
+  try{
+    await api('suppliers',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({supplier,type,dest,year,notes})});
+    document.getElementById('aSupplier').value='';
+    document.getElementById('aNotes').value='';
+    status('Supplier added!');
+    await loadAll();
+  }catch(e){alert('Error: '+e.message);}
 }
 
-function clearSearch(){document.getElementById('searchQ').value='';document.getElementById('filterDest').value='';document.getElementById('filterSupplier').value='';renderTable();}
-
-function openAdd(){
-  editId=null;
-  document.getElementById('modalTitle').textContent='Add buy rate';
-  ['fSupplier','fDest','fDesc','fGroup','fPrice','fFrom','fTo','fNotes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('fType').value='';
-  document.getElementById('fYear').value=curYear;
-  document.getElementById('fUnit').value='per vehicle/service';
-  document.getElementById('modal').classList.add('open');
+async function deleteSupplier(id){
+  if(!confirm('Delete this supplier and all their rates?'))return;
+  try{
+    await api('rates?supplier_id=eq.'+id,{method:'DELETE'});
+    await api('suppliers?id=eq.'+id,{method:'DELETE'});
+    status('Deleted.');
+    await loadAll();
+  }catch(e){alert('Error: '+e.message);}
 }
 
-function editRate(id){
-  const r=rates.find(x=>x.id===id);if(!r)return;editId=id;
-  document.getElementById('modalTitle').textContent='Edit buy rate';
-  document.getElementById('fSupplier').value=r.supplier;
-  document.getElementById('fType').value=r.type;
-  document.getElementById('fDest').value=r.dest;
-  document.getElementById('fYear').value=r.year;
-  document.getElementById('fDesc').value=r.description;
-  document.getElementById('fGroup').value=r.grp||'';
-  document.getElementById('fPrice').value=r.price;
-  document.getElementById('fUnit').value=r.unit||'per vehicle/service';
-  document.getElementById('fFrom').value=r.valid_from||'';
-  document.getElementById('fTo').value=r.valid_to||'';
-  document.getElementById('fNotes').value=r.notes||'';
-  document.getElementById('modal').classList.add('open');
+// ADD/EDIT RATE
+function openAddRate(supplierId){
+  document.getElementById('rateModalTitle').textContent='Add rate';
+  document.getElementById('rSupplierId').value=supplierId;
+  document.getElementById('rRateId').value='';
+  ['rDesc','rGroup','rPrice','rFrom','rTo','rNotes','rSection'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('rUnit').value='per vehicle/service';
+  document.getElementById('rateModal').classList.add('open');
 }
-
-function closeModal(){document.getElementById('modal').classList.remove('open');}
 
 async function saveRate(){
-  const supplier=document.getElementById('fSupplier').value.trim();
-  const type=document.getElementById('fType').value;
-  const dest=document.getElementById('fDest').value.trim();
-  const year=document.getElementById('fYear').value;
-  const description=document.getElementById('fDesc').value.trim();
-  const price=parseFloat(document.getElementById('fPrice').value);
-  if(!supplier||!type||!dest||!description||isNaN(price)){alert('Please fill all required fields (*)');return;}
-  const entry={year,supplier,type,dest,description,grp:document.getElementById('fGroup').value.trim(),price,unit:document.getElementById('fUnit').value,valid_from:document.getElementById('fFrom').value||null,valid_to:document.getElementById('fTo').value||null,notes:document.getElementById('fNotes').value.trim()};
-  const btn=document.getElementById('saveBtn');
-  btn.textContent='Saving...';btn.disabled=true;
+  const supplierId=document.getElementById('rSupplierId').value;
+  const rateId=document.getElementById('rRateId').value;
+  const description=document.getElementById('rDesc').value.trim();
+  const price=parseFloat(document.getElementById('rPrice').value);
+  if(!description||isNaN(price)){alert('Description and price are required');return;}
+  const entry={
+    supplier_id:parseInt(supplierId),description,
+    grp:document.getElementById('rGroup').value.trim(),
+    price,unit:document.getElementById('rUnit').value,
+    valid_from:document.getElementById('rFrom').value||null,
+    valid_to:document.getElementById('rTo').value||null,
+    notes:document.getElementById('rNotes').value.trim(),
+    section:document.getElementById('rSection').value.trim()||null
+  };
   try{
-    if(editId){
-      await apiFetch('?id=eq.'+editId,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify(entry)});
+    if(rateId){
+      await api('rates?id=eq.'+rateId,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify(entry)});
     }else{
-      await apiFetch('',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(entry)});
+      await api('rates',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(entry)});
     }
-    closeModal();
-    await loadRates();
-  }catch(e){alert('Save failed: '+e.message);}
-  btn.textContent='Save rate';btn.disabled=false;
+    closeModal();status('Rate saved!');
+    await loadAll();
+    if(curSupplier)renderDetail();
+  }catch(e){alert('Error: '+e.message);}
 }
 
-async function delRate(id){
-  if(!confirm('Delete this rate?'))return;
+function closeModal(){document.getElementById('rateModal').classList.remove('open');}
+
+// PDF UPLOAD
+function openPdfUpload(id){
+  document.getElementById('pdfSupplierId').value=id;
+  document.getElementById('pdfFile').value='';
+  document.getElementById('pdfProgress').style.display='none';
+  document.getElementById('pdfModal').classList.add('open');
+}
+function closePdfModal(){document.getElementById('pdfModal').classList.remove('open');}
+
+async function uploadPdf(){
+  const id=document.getElementById('pdfSupplierId').value;
+  const file=document.getElementById('pdfFile').files[0];
+  if(!file){alert('Please select a file');return;}
+  document.getElementById('pdfProgress').style.display='block';
   try{
-    await apiFetch('?id=eq.'+id,{method:'DELETE'});
-    await loadRates();
-  }catch(e){alert('Delete failed: '+e.message);}
+    const path='supplier-'+id+'/'+file.name;
+    const url=await storageUpload('rate-documents',path,file);
+    await api('suppliers?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({pdf_url:url})});
+    closePdfModal();status('Document uploaded!');
+    await loadAll();
+    if(curSupplier&&curSupplier.id==id){curSupplier=suppliers.find(s=>s.id==id);renderDetail();}
+  }catch(e){document.getElementById('pdfProgress').style.display='none';alert('Upload failed: '+e.message);}
 }
 
-document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.getElementById('rateModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.getElementById('pdfModal').addEventListener('click',function(e){if(e.target===this)closePdfModal();});
 
-loadRates();
+loadAll();
 </script>
 </body>
 </html>
