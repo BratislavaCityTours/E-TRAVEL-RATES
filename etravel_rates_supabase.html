@@ -102,12 +102,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .empty{text-align:center;padding:48px;color:var(--muted)}
 .empty .ico{font-size:40px;margin-bottom:12px}
 
+.excel-wrap{overflow:auto;max-height:600px;padding:0}
+.excel-table{border-collapse:collapse;font-size:12px;width:100%;white-space:nowrap}
+.excel-table th{background:#185FA5;color:#fff;padding:7px 12px;text-align:left;font-weight:600;position:sticky;top:0;z-index:1}
+.excel-table td{padding:6px 12px;border-bottom:1px solid #f0ede8;vertical-align:top}
+.excel-table tr:hover td{background:#faf9f6}
+.excel-table tr:nth-child(even) td{background:#f8f7f4}
+.excel-table tr:nth-child(even):hover td{background:#f0ede8}
+.sheet-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);background:#faf9f6;overflow-x:auto}
+.sheet-tab{padding:8px 16px;font-size:12px;cursor:pointer;border:none;background:transparent;color:var(--muted);white-space:nowrap;border-bottom:2px solid transparent}
+.sheet-tab.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+.excel-loading{padding:32px;text-align:center;color:var(--muted);font-size:13px}
 .toast{position:fixed;bottom:20px;right:20px;background:#1a1a1a;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:400;opacity:0;transition:opacity 0.3s;pointer-events:none}
 .toast.show{opacity:1}
 
 @media print{.header,.doc-actions,.pdf-box-header button,.btn{display:none!important}.view{padding:0}}
 @media(max-width:600px){.cat-grid{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr}.view{padding:16px 14px}}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -210,7 +222,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Upload the original PDF rate sheet for this supplier. It will be shown alongside the rates.</p>
   <input type="hidden" id="pdfSuppId">
   <div class="fg">
-    <div class="full"><label>Select file (PDF recommended)</label><input type="file" id="pdfFile" accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
+    <div class="full"><label>Select file (PDF, Excel, Word...)</label><input type="file" id="pdfFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.ods,.odt,.csv,.ppt,.pptx"></div>
   </div>
   <div id="pdfProg" style="display:none;font-size:13px;color:var(--blue);margin-top:10px">Uploading, please wait...</div>
   <div class="modal-footer">
@@ -253,7 +265,10 @@ async function api(path,opts={}){
 
 async function storageUp(path,file){
   const r=await fetch(SB+'/storage/v1/object/rate-documents/'+path,{method:'POST',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':file.type,'x-upsert':'true'},body:file});
-  if(!r.ok)throw new Error(await r.text());
+  if(r.status!==200&&r.status!==201&&r.status!==204){
+    const txt=await r.text();
+    throw new Error(txt||'Upload failed (status '+r.status+')');
+  }
   return SB+'/storage/v1/object/public/rate-documents/'+path;
 }
 
@@ -390,16 +405,25 @@ function renderDetail(){
     <div class="pdf-box">
       <div class="pdf-box-header">
         <span>📄 Original rate document</span>
-        <button class="btn btn-sm btn-ghost" onclick="openPdfUpload(${s.id})">📎 Upload / replace document</button>
+        <button class="btn btn-sm btn-ghost" onclick="openPdfUpload(${s.id})">📎 Upload / replace document (PDF, Excel, Word)</button>
       </div>
       ${s.pdf_url
-        ?`<iframe class="pdf-embed" src="${s.pdf_url}"></iframe>`
+        ?isPdf(s.pdf_url)
+          ?`<iframe class="pdf-embed" src="${s.pdf_url}"></iframe>`
+          :isExcel(s.pdf_url)
+            ?`<div id="excel-${s.id}"><div class="excel-loading">Loading Excel...</div></div>`
+            :`<div class="pdf-empty">
+                <div style="margin-bottom:12px">📎 Document uploaded</div>
+                <a href="${s.pdf_url}" target="_blank" class="pdf-empty-btn" style="text-decoration:none;color:var(--blue)">⬇ Download / open document</a>
+              </div>`
         :`<div class="pdf-empty">
             <div>No document uploaded yet</div>
-            <div class="pdf-empty-btn" onclick="openPdfUpload(${s.id})">📎 Upload original PDF / Word file</div>
+            <div class="pdf-empty-btn" onclick="openPdfUpload(${s.id})">📎 Upload original PDF / Excel / Word file</div>
           </div>`}
     </div>`;
 
+  const _pdfUrl=s.pdf_url;
+  const _suppId=s.id;
   document.getElementById('detailContent').innerHTML=`
     <div class="doc-header">
       <div>
@@ -418,6 +442,9 @@ function renderDetail(){
     </div>
     ${ratesHTML}
     ${pdfHTML}`;
+  if(_pdfUrl&&isExcel(_pdfUrl)){
+    setTimeout(()=>loadExcel(_pdfUrl,'excel-'+_suppId),100);
+  }
 }
 
 // ADMIN
@@ -456,7 +483,58 @@ async function addSupplier(){
   try{
     await api('suppliers',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({supplier,type,dest,year,notes})});
     document.getElementById('aName').value='';document.getElementById('aNotes').value='';
-    toast('Supplier added!');await loadAll();
+    toast('Supplier added!');await function isPdf(url){return url&&url.toLowerCase().includes('.pdf');}
+function isExcel(url){return url&&(url.toLowerCase().includes('.xlsx')||url.toLowerCase().includes('.xls'));}
+
+let excelCache={};
+async function loadExcel(url,containerId){
+  const el=document.getElementById(containerId);
+  if(!el)return;
+  if(excelCache[url]){el.innerHTML=excelCache[url];bindSheetTabs(containerId);return;}
+  el.innerHTML='<div class="excel-loading">Loading Excel file...</div>';
+  try{
+    const resp=await fetch(url);
+    const ab=await resp.arrayBuffer();
+    const wb=XLSX.read(ab,{type:'array'});
+    let html='<div class="sheet-tabs">';
+    wb.SheetNames.forEach((name,i)=>{
+      html+=`<button class="sheet-tab${i===0?' active':''}" data-sheet="${i}" onclick="switchSheet(this,'${containerId}')">${name}</button>`;
+    });
+    html+='</div>';
+    wb.SheetNames.forEach((name,i)=>{
+      const ws=wb.Sheets[name];
+      const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+      html+=`<div class="excel-wrap sheet-content" data-idx="${i}"${i!==0?' style="display:none"':''}>`;
+      html+='<table class="excel-table"><thead><tr>';
+      if(rows.length>0){
+        rows[0].forEach(h=>{html+=`<th>${h||''}</th>`;});
+        html+='</tr></thead><tbody>';
+        rows.slice(1).forEach(row=>{
+          html+='<tr>';
+          rows[0].forEach((_,ci)=>{html+=`<td>${row[ci]!==undefined?row[ci]:''}</td>`;});
+          html+='</tr>';
+        });
+        html+='</tbody>';
+      }
+      html+='</table></div>';
+    });
+    excelCache[url]=html;
+    el.innerHTML=html;
+    bindSheetTabs(containerId);
+  }catch(e){el.innerHTML='<div class="excel-loading">Could not load Excel file. <a href="'+url+'" target="_blank">Download instead</a></div>';}
+}
+
+function switchSheet(btn,containerId){
+  const container=document.getElementById(containerId);
+  container.querySelectorAll('.sheet-tab').forEach(t=>t.classList.remove('active'));
+  container.querySelectorAll('.sheet-content').forEach(c=>c.style.display='none');
+  btn.classList.add('active');
+  const idx=btn.getAttribute('data-sheet');
+  container.querySelector(`.sheet-content[data-idx="${idx}"]`).style.display='';
+}
+
+function bindSheetTabs(containerId){}
+loadAll();
   }catch(e){alert('Error: '+e.message);}
 }
 
