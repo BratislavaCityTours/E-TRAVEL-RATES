@@ -9,21 +9,62 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--blue:#185FA5;--blue-dark:#0e4a82;--blue-light:#e8f0fb;--green:#0F6E56;--bg:#f4f3ef;--white:#fff;--border:#e2dfd8;--text:#1a1a1a;--muted:#777;--shadow:0 2px 8px rgba(0,0,0,0.07)}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-.header{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg)}
+.login-box{background:var(--white);border-radius:16px;border:1px solid var(--border);padding:40px 36px;width:380px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,0.08)}
+.login-logo{font-size:20px;font-weight:700;text-align:center;margin-bottom:6px}.login-logo span{color:var(--blue)}
+.login-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px}
+.login-field{margin-bottom:14px}
+.login-field label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;display:block;margin-bottom:4px}
+.login-field input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;background:var(--white);color:var(--text)}
+.login-field input:focus{outline:none;border-color:var(--blue)}
+.login-btn{width:100%;padding:11px;background:var(--blue);border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px}
+.login-btn:hover{background:var(--blue-dark)}
+.login-err{color:#c00;font-size:13px;text-align:center;margin-top:10px;min-height:18px}
+
+/* HEADER */
+.header{background:var(--white);border-bottom:1px solid var(--border);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .logo{font-size:15px;font-weight:700}.logo span{color:var(--blue)}
 .bc{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .bc a{color:var(--blue);cursor:pointer;text-decoration:none}.bc a:hover{text-decoration:underline}
 .bc .sep{color:var(--border)}
-.sync{font-size:12px;color:var(--muted)}
+.header-right{display:flex;align-items:center;gap:10px}
+.user-info{font-size:12px;color:var(--muted)}
+
+/* SEARCH BAR */
+.search-bar-wrap{background:var(--white);border-bottom:1px solid var(--border);padding:10px 20px}
+.search-input-wrap{position:relative;max-width:600px}
+.search-input-wrap input{width:100%;padding:8px 12px 8px 36px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--white);color:var(--text)}
+.search-input-wrap input:focus{outline:none;border-color:var(--blue)}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px}
+.search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--muted);font-size:16px;display:none}
+
+/* SEARCH RESULTS */
+.search-results{background:var(--white);border:1px solid var(--border);border-radius:10px;margin:0 20px 0;max-width:960px;overflow:hidden}
+.search-result-item{padding:12px 16px;border-bottom:1px solid #f0ede8;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+.search-result-item:last-child{border-bottom:none}
+.search-result-item:hover{background:#faf9f6}
+.sri-supplier{font-size:12px;font-weight:600;color:var(--blue)}
+.sri-desc{font-size:13px;font-weight:500}
+.sri-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.sri-price{font-size:15px;font-weight:700;color:var(--blue);white-space:nowrap}
+.search-no-results{padding:24px;text-align:center;color:var(--muted);font-size:13px}
+
+/* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--text);transition:all 0.15s}
 .btn:hover{background:var(--bg)}.btn-primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-dark)}
 .btn-green{background:var(--green);border-color:var(--green);color:#fff}.btn-green:hover{background:#0a5441}
 .btn-sm{padding:4px 10px;font-size:12px}.btn-ghost{border:none;background:none;color:var(--blue)}.btn-ghost:hover{background:var(--blue-light)}
 .btn-danger{color:#a00;border-color:#f5c0c0}.btn-danger:hover{background:#fff0f0}
-.view{display:none;padding:32px 24px;max-width:1100px;margin:0 auto}
+
+/* VIEWS */
+.view{display:none;padding:28px 20px;max-width:1100px;margin:0 auto}
 .view.active{display:block}
 .page-title{font-size:22px;font-weight:700;margin-bottom:6px}
 .page-sub{font-size:14px;color:var(--muted);margin-bottom:28px}
+
+/* YEAR */
 .year-grid{display:flex;flex-wrap:wrap;gap:16px}
 .year-card{background:var(--white);border:2px solid var(--border);border-radius:14px;padding:32px 40px;cursor:pointer;transition:all 0.15s;text-align:center;min-width:160px}
 .year-card:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translateY(-2px)}
@@ -31,18 +72,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .year-meta{font-size:13px;color:var(--muted)}
 .year-add{background:var(--bg);border:2px dashed var(--border);color:var(--muted);font-size:28px;font-weight:300}
 .year-add:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+
+/* CAT */
 .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
 .cat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:24px 20px;cursor:pointer;transition:all 0.15s;text-align:center}
 .cat-card:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translateY(-2px)}
 .cat-icon{font-size:34px;margin-bottom:10px}
 .cat-name{font-size:15px;font-weight:600;margin-bottom:4px}
 .cat-count{font-size:12px;color:var(--muted)}
+
+/* SUPPLIER */
 .sup-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
 .sup-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px 20px;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:space-between}
 .sup-card:hover{border-color:var(--blue);box-shadow:var(--shadow)}
 .sup-name{font-size:14px;font-weight:600;margin-bottom:3px}
 .sup-meta{font-size:12px;color:var(--muted)}
 .arrow{color:var(--muted);font-size:20px}
+
+/* DETAIL */
 .doc-header{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:22px 26px;margin-bottom:14px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .doc-name{font-size:20px;font-weight:700;margin-bottom:5px}
 .doc-meta{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -62,6 +109,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .doc-empty{padding:32px;text-align:center;color:var(--muted);font-size:13px}
 .doc-empty-btn{display:inline-block;margin-top:10px;padding:8px 18px;border:1.5px dashed var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s}
 .doc-empty-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+/* EXCEL */
 .excel-wrap{overflow:auto;max-height:600px}
 .excel-table{border-collapse:collapse;font-size:12px;width:100%;white-space:nowrap}
 .excel-table th{background:var(--blue);color:#fff;padding:7px 12px;text-align:left;font-weight:600;position:sticky;top:0;z-index:1}
@@ -71,6 +120,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sheet-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);background:#faf9f6;overflow-x:auto}
 .sheet-tab{padding:8px 16px;font-size:12px;cursor:pointer;border:none;background:transparent;color:var(--muted);white-space:nowrap;border-bottom:2px solid transparent}
 .sheet-tab.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+
+/* ADMIN */
 .admin-box{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:16px}
 .admin-box-title{font-size:14px;font-weight:600;margin-bottom:14px}
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -79,11 +130,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .fg input,.fg select,.fg textarea{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:7px;font-size:13px;background:var(--white);color:var(--text)}
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--blue)}
 .fg textarea{resize:vertical;min-height:54px}
+
+/* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center}
 .modal-bg.open{display:flex}
 .modal{background:var(--white);border-radius:14px;padding:24px;width:560px;max-width:96vw;max-height:92vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,0.15)}
 .modal-title{font-size:16px;font-weight:700;margin-bottom:16px}
 .modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+
 .badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600}
 .b-transfer{background:#ddeefb;color:#0a4478}.b-guide{background:#ddf0e3;color:#1a5c2e}
 .b-restaurant{background:#fef0dc;color:#7a4410}.b-hotel{background:#ebe8fd;color:#3d2a8a}
@@ -93,25 +147,59 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .empty .ico{font-size:40px;margin-bottom:12px}
 .toast{position:fixed;bottom:20px;right:20px;background:#1a1a1a;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:400;opacity:0;transition:opacity 0.3s;pointer-events:none}
 .toast.show{opacity:1}
-@media print{.header,.doc-actions,.doc-box-hdr button{display:none!important}.view{padding:0}}
+@media print{.header,.search-bar-wrap,.doc-actions,.doc-box-hdr button{display:none!important}.view{padding:0}}
 @media(max-width:600px){.cat-grid{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr}.view{padding:16px 14px}}
 </style>
 </head>
 <body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="login-wrap">
+  <div class="login-box">
+    <div class="login-logo">E-TRAVEL<span>.SK</span></div>
+    <div class="login-sub">Buy Rate Finder — secure access</div>
+    <div class="login-field">
+      <label>Email</label>
+      <input type="email" id="loginEmail" placeholder="your@email.com" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="loginPwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" onclick="doLogin()" id="loginBtn">Sign in</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- MAIN APP (hidden until logged in) -->
+<div id="mainApp" style="display:none">
 
 <div class="header">
   <div style="display:flex;align-items:center;gap:16px">
     <div class="logo">E-TRAVEL<span>.SK</span></div>
     <div class="bc" id="bc"></div>
   </div>
-  <div style="display:flex;align-items:center;gap:12px">
-    <span class="sync" id="sync">Connecting...</span>
+  <div class="header-right">
+    <span class="user-info" id="userInfo"></span>
     <button class="btn btn-sm" onclick="showView('admin')">⚙ Admin</button>
+    <button class="btn btn-sm btn-danger" onclick="doLogout()">Sign out</button>
   </div>
 </div>
 
+<!-- SEARCH BAR (visible when year is selected) -->
+<div class="search-bar-wrap" id="searchBarWrap" style="display:none">
+  <div class="search-input-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search rates in current year..." oninput="onSearch(this.value)">
+    <span class="search-clear" id="searchClear" onclick="clearSearch()">×</span>
+  </div>
+</div>
+
+<!-- SEARCH RESULTS (shown when searching) -->
+<div id="searchResultsWrap" style="display:none;padding:12px 20px 0;max-width:1100px;margin:0 auto"></div>
+
 <div class="view active" id="view-year">
-  <div class="page-title">E-TRAVEL.SK — Buy Rate Finder</div>
+  <div class="page-title">Buy Rate Finder</div>
   <div class="page-sub">Select a year to browse supplier rates</div>
   <div class="year-grid" id="yearGrid"></div>
 </div>
@@ -151,10 +239,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div style="margin-top:12px"><button class="btn btn-primary" onclick="addSupplier()">Add supplier</button></div>
   </div>
   <div class="admin-box">
+    <div class="admin-box-title">👤 Add team member</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px">To add a new user, go to your <strong>Supabase dashboard → Authentication → Users → Invite user</strong>. Enter their email and they will receive a login link.</p>
+    <a href="https://supabase.com/dashboard" target="_blank" class="btn btn-sm btn-primary">Open Supabase Auth →</a>
+  </div>
+  <div class="admin-box">
     <div class="admin-box-title">📋 All suppliers</div>
     <div id="adminList"></div>
   </div>
 </div>
+
+</div><!-- end mainApp -->
 
 <!-- RATE MODAL -->
 <div class="modal-bg" id="rateModal">
@@ -183,11 +278,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 </div>
 
-<!-- PDF/DOC MODAL -->
+<!-- DOC MODAL -->
 <div class="modal-bg" id="docModal">
 <div class="modal">
   <div class="modal-title">Upload rate document</div>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Upload the original rate document — PDF (shown inline), Excel (.xlsx, shown as table), Word or other (download link).</p>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px">PDF (shown inline), Excel (.xlsx, shown as table), Word or other (download link).</p>
   <input type="hidden" id="docSuppId">
   <div class="fg">
     <div class="full"><label>Select file (PDF, Excel, Word...)</label>
@@ -202,7 +297,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 </div>
 
-<!-- ADD YEAR MODAL -->
+<!-- YEAR MODAL -->
 <div class="modal-bg" id="yearModal">
 <div class="modal">
   <div class="modal-title">Add year</div>
@@ -221,31 +316,65 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <script>
 const SB='https://dwinbhzqwghsejjbfsxa.supabase.co';
 const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3aW5iaHpxd2doc2VqamJmc3hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MjAzNjMsImV4cCI6MjA5MjE5NjM2M30.ZStkPwoQQtAARmcd0JfIHmQzLVIQwYMBNGjoxFy8KKE';
-const H={'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY};
 const CATS={Transfer:'🚌',Guide:'🎤',Restaurant:'🍽️',Hotel:'🏨',Attraction:'🏛️',Cruise:'🚢',Concert:'🎶',Other:'📦'};
 
 let suppliers=[],rates=[],curYear='',curCat='',curSup=null;
 let excelCache={};
+let authToken='';
+let searchTimer=null;
+
+// ── AUTH ─────────────────────────────────────────────
+async function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pwd=document.getElementById('loginPwd').value;
+  const err=document.getElementById('loginErr');
+  const btn=document.getElementById('loginBtn');
+  if(!email||!pwd){err.textContent='Please enter email and password';return;}
+  btn.textContent='Signing in...';btn.disabled=true;err.textContent='';
+  try{
+    const r=await fetch(SB+'/auth/v1/token?grant_type=password',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':KEY},
+      body:JSON.stringify({email,password:pwd})
+    });
+    const d=await r.json();
+    if(!r.ok||d.error)throw new Error(d.error_description||d.error||'Login failed');
+    authToken=d.access_token;
+    document.getElementById('userInfo').textContent=email;
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('mainApp').style.display='block';
+    loadAll();
+  }catch(e){err.textContent=e.message;}
+  btn.textContent='Sign in';btn.disabled=false;
+}
+
+function doLogout(){
+  authToken='';
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('mainApp').style.display='none';
+  document.getElementById('loginEmail').value='';
+  document.getElementById('loginPwd').value='';
+  document.getElementById('loginErr').textContent='';
+}
 
 // ── API ──────────────────────────────────────────────
+function authH(){return{'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+(authToken||KEY)};}
+
 async function api(path,opts={}){
-  const r=await fetch(SB+'/rest/v1/'+path,{headers:{...H,...(opts.headers||{})},method:opts.method||'GET',body:opts.body});
+  const r=await fetch(SB+'/rest/v1/'+path,{headers:{...authH(),...(opts.headers||{})},method:opts.method||'GET',body:opts.body});
   if(!r.ok){const t=await r.text();throw new Error(t);}
   if(opts.method&&opts.method!=='GET'&&opts.method!=='PATCH')return r;
   return r.json();
 }
 
 async function storageUp(path,file){
-  const r=await fetch(SB+'/storage/v1/object/rate-documents/'+path,{
-    method:'POST',
-    headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':file.type,'x-upsert':'true'},
-    body:file
-  });
-  // Supabase storage returns 200 with body or 200 empty — we just check status
-  if(r.status!==200&&r.status!==201&&r.status!==204){
-    const t=await r.text();
-    throw new Error(t||'Upload failed');
-  }
+  try{
+    await fetch(SB+'/storage/v1/object/rate-documents/'+path,{
+      method:'POST',
+      headers:{'apikey':KEY,'Authorization':'Bearer '+(authToken||KEY),'Content-Type':file.type,'x-upsert':'true'},
+      body:file
+    });
+  }catch(e){if(e.name==='TypeError')throw e;}
   return SB+'/storage/v1/object/public/rate-documents/'+path;
 }
 
@@ -253,13 +382,59 @@ async function storageUp(path,file){
 function toast(msg,dur=2500){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),dur);}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+function fileType(url){if(!url)return'none';const u=url.toLowerCase();if(u.includes('.pdf'))return'pdf';if(u.includes('.xlsx')||u.includes('.xls'))return'excel';return'other';}
 
-function fileType(url){
-  if(!url)return'none';
-  const u=url.toLowerCase();
-  if(u.includes('.pdf'))return'pdf';
-  if(u.includes('.xlsx')||u.includes('.xls'))return'excel';
-  return'other';
+// ── SEARCH ───────────────────────────────────────────
+function onSearch(val){
+  clearTimeout(searchTimer);
+  const clear=document.getElementById('searchClear');
+  clear.style.display=val?'block':'none';
+  if(!val){document.getElementById('searchResultsWrap').style.display='none';return;}
+  searchTimer=setTimeout(()=>doSearch(val),200);
+}
+
+function doSearch(q){
+  if(!curYear||!q.trim()){document.getElementById('searchResultsWrap').style.display='none';return;}
+  const ql=q.toLowerCase();
+  const yearSupIds=new Set(suppliers.filter(s=>s.year===curYear).map(s=>s.id));
+  const matched=rates.filter(r=>{
+    if(!yearSupIds.has(r.supplier_id))return false;
+    return[r.description,r.grp,r.notes,r.section].filter(Boolean).join(' ').toLowerCase().includes(ql)
+      ||suppliers.find(s=>s.id===r.supplier_id)?.supplier.toLowerCase().includes(ql);
+  });
+  const wrap=document.getElementById('searchResultsWrap');
+  wrap.style.display='block';
+  if(!matched.length){
+    wrap.innerHTML='<div class="search-results"><div class="search-no-results">No rates found for "'+q+'" in '+curYear+'</div></div>';
+    return;
+  }
+  wrap.innerHTML='<div class="search-results">'+matched.slice(0,30).map(r=>{
+    const s=suppliers.find(x=>x.id===r.supplier_id);
+    return`<div class="search-result-item" onclick="goToRate(${r.supplier_id})">
+      <div>
+        <div class="sri-supplier">${s?s.supplier:''} <span class="badge b-${s?s.type.toLowerCase():''}">${s?s.type:''}</span></div>
+        <div class="sri-desc">${r.description}</div>
+        <div class="sri-meta">${r.grp?r.grp+' · ':''}${s?s.dest:''}</div>
+      </div>
+      <div></div>
+      <div class="sri-price">${Number(r.price).toFixed(2)} €<br><span style="font-size:11px;font-weight:400;color:var(--muted)">${r.unit||''}</span></div>
+    </div>`;
+  }).join('')+(matched.length>30?`<div class="search-no-results">Showing 30 of ${matched.length} results — refine your search</div>`:'')+
+  '</div>';
+}
+
+function goToRate(suppId){
+  clearSearch();
+  const s=suppliers.find(x=>x.id===suppId);
+  if(!s)return;
+  curCat=s.type;curSup=s;
+  renderDetail();showView('detail');
+}
+
+function clearSearch(){
+  document.getElementById('searchInput').value='';
+  document.getElementById('searchClear').style.display='none';
+  document.getElementById('searchResultsWrap').style.display='none';
 }
 
 // ── LOAD ─────────────────────────────────────────────
@@ -269,20 +444,18 @@ async function loadAll(){
       api('suppliers?order=supplier.asc'),
       api('rates?order=section.asc,id.asc&limit=2000')
     ]);
-    const n=suppliers.length;
-    document.getElementById('sync').textContent='✓ '+n+' supplier'+(n!==1?'s':'');
     renderYear();renderAdminList();
-  }catch(e){
-    document.getElementById('sync').textContent='⚠ Error';
-    document.getElementById('sync').style.color='#c00';
-    console.error(e);
-  }
+    if(curSup){curSup=suppliers.find(s=>s.id===curSup.id);renderDetail();}
+  }catch(e){console.error(e);}
 }
 
 // ── VIEWS ────────────────────────────────────────────
 function showView(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
+  const showSearch=curYear&&name!=='admin';
+  document.getElementById('searchBarWrap').style.display=showSearch?'block':'none';
+  if(!showSearch)clearSearch();
   renderBc();
 }
 
@@ -294,8 +467,8 @@ function renderBc(){
   document.getElementById('bc').innerHTML=h;
 }
 
-function goYear(){curCat='';curSup=null;renderYear();showView('year');}
-function goCat(){curSup=null;renderCat();showView('cat');}
+function goYear(){curCat='';curSup=null;clearSearch();renderYear();showView('year');}
+function goCat(){curSup=null;clearSearch();renderSup();showView('sup');}
 
 // ── YEAR ─────────────────────────────────────────────
 function years(){return[...new Set(suppliers.map(s=>s.year))].sort().reverse();}
@@ -311,23 +484,16 @@ function renderYear(){
     `<div class="year-card year-add" onclick="openAddYear()" title="Add year">+</div>`;
 }
 
-function selectYear(y){curYear=y;curCat='';curSup=null;renderCat();showView('cat');}
+function selectYear(y){curYear=y;curCat='';curSup=null;clearSearch();renderCat();showView('cat');}
 function openAddYear(){document.getElementById('newYear').value='';document.getElementById('yearModal').classList.add('open');}
-function confirmAddYear(){
-  const y=document.getElementById('newYear').value.trim();
-  if(!y||isNaN(y)){alert('Enter a valid year');return;}
-  curYear=y;closeModal('yearModal');renderCat();showView('cat');
-}
+function confirmAddYear(){const y=document.getElementById('newYear').value.trim();if(!y||isNaN(y)){alert('Enter a valid year');return;}curYear=y;closeModal('yearModal');renderCat();showView('cat');}
 
 // ── CATEGORY ─────────────────────────────────────────
 function renderCat(){
   const filtered=suppliers.filter(s=>s.year===curYear);
   const counts={};filtered.forEach(s=>{counts[s.type]=(counts[s.type]||0)+1;});
   const cats=Object.keys(CATS).filter(t=>counts[t]);
-  if(!cats.length){
-    document.getElementById('catGrid').innerHTML=`<div class="empty"><div class="ico">📂</div><p>No suppliers for ${curYear} yet.<br>Go to Admin to add suppliers.</p></div>`;
-    return;
-  }
+  if(!cats.length){document.getElementById('catGrid').innerHTML=`<div class="empty"><div class="ico">📂</div><p>No suppliers for ${curYear} yet.</p></div>`;return;}
   document.getElementById('catGrid').innerHTML=cats.map(t=>`
     <div class="cat-card" onclick="selectCat('${t}')">
       <div class="cat-icon">${CATS[t]}</div>
@@ -344,14 +510,8 @@ function renderSup(){
   document.getElementById('supGrid').innerHTML=filtered.map(s=>{
     const rc=rates.filter(r=>r.supplier_id===s.id).length;
     return`<div class="sup-card" onclick="selectSup(${s.id})">
-      <div>
-        <div class="sup-name">${s.supplier}</div>
-        <div class="sup-meta">${s.dest} · ${rc} rate${rc!==1?'s':''}</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span class="badge b-${curCat.toLowerCase()}">${curCat}</span>
-        <span class="arrow">›</span>
-      </div>
+      <div><div class="sup-name">${s.supplier}</div><div class="sup-meta">${s.dest} · ${rc} rate${rc!==1?'s':''}</div></div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="badge b-${curCat.toLowerCase()}">${curCat}</span><span class="arrow">›</span></div>
     </div>`;}).join('');
 }
 
@@ -361,10 +521,7 @@ function selectSup(id){curSup=suppliers.find(s=>s.id===id);renderDetail();showVi
 function renderDetail(){
   const s=curSup;
   const sr=rates.filter(r=>r.supplier_id===s.id);
-  // Group by section
-  const secs={};
-  sr.forEach(r=>{const k=r.section||'Rates';if(!secs[k])secs[k]=[];secs[k].push(r);});
-
+  const secs={};sr.forEach(r=>{const k=r.section||'Rates';if(!secs[k])secs[k]=[];secs[k].push(r);});
   const ratesHTML=sr.length
     ?Object.entries(secs).map(([sec,rs])=>`
       <div class="doc-section">
@@ -380,35 +537,20 @@ function renderDetail(){
             <div><div class="rate-price">${Number(r.price).toFixed(2)} €</div></div>
           </div>`).join('')}
       </div>`).join('')
-    :`<div class="empty"><div class="ico">📋</div><p>No rates yet.<br>Click "+ Add rate" to add the first one.</p></div>`;
+    :`<div class="empty"><div class="ico">📋</div><p>No rates yet. Click "+ Add rate".</p></div>`;
 
   const ft=fileType(s.pdf_url);
   let docContent='';
-  if(ft==='pdf'){
-    docContent=`<iframe class="pdf-frame" src="${s.pdf_url}"></iframe>`;
-  }else if(ft==='excel'){
-    docContent=`<div id="excel-container-${s.id}"><div class="doc-empty">Loading Excel file...</div></div>`;
-  }else if(ft==='other'){
-    docContent=`<div class="doc-empty">
-      <div style="margin-bottom:10px">📎 Document uploaded</div>
-      <a href="${s.pdf_url}" target="_blank" class="doc-empty-btn" style="text-decoration:none;color:var(--blue)">⬇ Download / open document</a>
-    </div>`;
-  }else{
-    docContent=`<div class="doc-empty">
-      <div>No document uploaded yet</div>
-      <div class="doc-empty-btn" onclick="openDocUpload(${s.id})">📎 Upload PDF / Excel / Word file</div>
-    </div>`;
-  }
+  if(ft==='pdf') docContent=`<iframe class="pdf-frame" src="${s.pdf_url}"></iframe>`;
+  else if(ft==='excel') docContent=`<div id="excel-${s.id}"><div class="doc-empty">Loading Excel...</div></div>`;
+  else if(ft==='other') docContent=`<div class="doc-empty"><div style="margin-bottom:10px">📎 Document uploaded</div><a href="${s.pdf_url}" target="_blank" class="doc-empty-btn" style="text-decoration:none;color:var(--blue)">⬇ Download / open</a></div>`;
+  else docContent=`<div class="doc-empty"><div>No document uploaded yet</div><div class="doc-empty-btn" onclick="openDocUpload(${s.id})">📎 Upload PDF / Excel / Word</div></div>`;
 
   document.getElementById('detailContent').innerHTML=`
     <div class="doc-header">
       <div>
         <div class="doc-name">${s.supplier}</div>
-        <div class="doc-meta">
-          <span class="badge b-${s.type.toLowerCase()}">${s.type}</span>
-          <span>${s.dest}</span><span>·</span><span>${s.year}</span>
-          ${s.notes?`<span>·</span><span style="font-style:italic">${s.notes}</span>`:''}
-        </div>
+        <div class="doc-meta"><span class="badge b-${s.type.toLowerCase()}">${s.type}</span><span>${s.dest}</span><span>·</span><span>${s.year}</span>${s.notes?`<span>·</span><span style="font-style:italic">${s.notes}</span>`:''}</div>
       </div>
       <div class="doc-actions">
         <button class="btn btn-sm" onclick="window.print()">🖨 Print</button>
@@ -417,94 +559,71 @@ function renderDetail(){
     </div>
     ${ratesHTML}
     <div class="doc-box">
-      <div class="doc-box-hdr">
-        <span>📄 Original rate document</span>
-        <button class="btn btn-sm btn-ghost" onclick="openDocUpload(${s.id})">📎 Upload / replace</button>
-      </div>
+      <div class="doc-box-hdr"><span>📄 Original rate document</span><button class="btn btn-sm btn-ghost" onclick="openDocUpload(${s.id})">📎 Upload / replace</button></div>
       ${docContent}
     </div>`;
-
-  // Load Excel after DOM is ready
-  if(ft==='excel'){
-    setTimeout(()=>loadExcel(s.pdf_url,'excel-container-'+s.id),100);
-  }
+  if(ft==='excel') setTimeout(()=>loadExcel(s.pdf_url,'excel-'+s.id),100);
 }
 
-// ── EXCEL VIEWER ─────────────────────────────────────
-async function loadExcel(url,containerId){
-  const el=document.getElementById(containerId);
-  if(!el)return;
+// ── EXCEL ─────────────────────────────────────────────
+async function loadExcel(url,cid){
+  const el=document.getElementById(cid);if(!el)return;
   if(excelCache[url]){el.innerHTML=excelCache[url];return;}
   try{
-    const resp=await fetch(url);
-    const ab=await resp.arrayBuffer();
+    const ab=await (await fetch(url)).arrayBuffer();
     const wb=XLSX.read(ab,{type:'array'});
-    let html='';
+    let h='';
     if(wb.SheetNames.length>1){
-      html+='<div class="sheet-tabs">';
-      wb.SheetNames.forEach((name,i)=>{
-        html+=`<button class="sheet-tab${i===0?' active':''}" onclick="switchSheet(this,'${containerId}',${i})">${name}</button>`;
-      });
-      html+='</div>';
+      h+='<div class="sheet-tabs">';
+      wb.SheetNames.forEach((n,i)=>{h+=`<button class="sheet-tab${i===0?' active':''}" onclick="switchSheet(this,'${cid}',${i})">${n}</button>`;});
+      h+='</div>';
     }
-    wb.SheetNames.forEach((name,i)=>{
-      const ws=wb.Sheets[name];
-      const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
-      html+=`<div class="excel-wrap" id="${containerId}-sheet-${i}"${i!==0?' style="display:none"':''}>`;
+    wb.SheetNames.forEach((n,i)=>{
+      const rows=XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,defval:''});
+      h+=`<div class="excel-wrap" id="${cid}-s-${i}"${i?` style="display:none"`:''}>`;
       if(rows.length){
-        html+='<table class="excel-table"><thead><tr>';
-        rows[0].forEach(h=>{html+=`<th>${h!=null?h:''}</th>`;});
-        html+='</tr></thead><tbody>';
-        rows.slice(1).forEach(row=>{
-          html+='<tr>';
-          rows[0].forEach((_,ci)=>{html+=`<td>${row[ci]!=null?row[ci]:''}</td>`;});
-          html+='</tr>';
-        });
-        html+='</tbody></table>';
+        h+='<table class="excel-table"><thead><tr>';
+        rows[0].forEach(c=>{h+=`<th>${c??''}</th>`;});
+        h+='</tr></thead><tbody>';
+        rows.slice(1).forEach(row=>{h+='<tr>';rows[0].forEach((_,ci)=>{h+=`<td>${row[ci]??''}</td>`;});h+='</tr>';});
+        h+='</tbody></table>';
       }
-      html+='</div>';
+      h+='</div>';
     });
-    excelCache[url]=html;
-    el.innerHTML=html;
-  }catch(e){
-    el.innerHTML=`<div class="doc-empty">Could not load Excel. <a href="${url}" target="_blank" style="color:var(--blue)">Download instead</a></div>`;
-  }
+    excelCache[url]=h;el.innerHTML=h;
+  }catch(e){el.innerHTML=`<div class="doc-empty">Could not load Excel. <a href="${url}" target="_blank" style="color:var(--blue)">Download instead</a></div>`;}
 }
 
-function switchSheet(btn,containerId,idx){
-  const parent=btn.closest('.doc-box');
-  parent.querySelectorAll('.sheet-tab').forEach(t=>t.classList.remove('active'));
-  parent.querySelectorAll('[id^="'+containerId+'-sheet-"]').forEach(c=>c.style.display='none');
+function switchSheet(btn,cid,idx){
+  const box=btn.closest('.doc-box');
+  box.querySelectorAll('.sheet-tab').forEach(t=>t.classList.remove('active'));
+  box.querySelectorAll('[id^="'+cid+'-s-"]').forEach(c=>c.style.display='none');
   btn.classList.add('active');
-  document.getElementById(containerId+'-sheet-'+idx).style.display='';
+  document.getElementById(cid+'-s-'+idx).style.display='';
 }
 
-// ── ADMIN ────────────────────────────────────────────
+// ── ADMIN ─────────────────────────────────────────────
 function renderAdminList(){
   const el=document.getElementById('adminList');
   if(!suppliers.length){el.innerHTML='<div style="color:var(--muted);font-size:13px">No suppliers yet.</div>';return;}
   el.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px">
-    <thead><tr style="border-bottom:1px solid var(--border)">
-      ${['Supplier','Type','Dest','Year','Rates','Doc',''].map(h=>`<th style="padding:8px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase">${h}</th>`).join('')}
-    </tr></thead>
+    <thead><tr style="border-bottom:1px solid var(--border)">${['Supplier','Type','Dest','Year','Rates','Doc',''].map(h=>`<th style="padding:8px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase">${h}</th>`).join('')}</tr></thead>
     <tbody>${suppliers.map(s=>{
       const rc=rates.filter(r=>r.supplier_id===s.id).length;
       const ft=fileType(s.pdf_url);
-      const docIcon=ft==='pdf'?'📄 PDF':ft==='excel'?'📊 Excel':ft==='other'?'📎 File':'—';
+      const di=ft==='pdf'?'📄':ft==='excel'?'📊':ft==='other'?'📎':'—';
       return`<tr style="border-bottom:1px solid #f0ede8">
         <td style="padding:8px;font-weight:600">${s.supplier}</td>
         <td style="padding:8px"><span class="badge b-${s.type.toLowerCase()}">${s.type}</span></td>
         <td style="padding:8px;color:var(--muted)">${s.dest}</td>
         <td style="padding:8px;color:var(--muted)">${s.year}</td>
         <td style="padding:8px">${rc}</td>
-        <td style="padding:8px;font-size:12px">${docIcon}</td>
+        <td style="padding:8px">${di}</td>
         <td style="padding:8px;text-align:right;white-space:nowrap">
           <button class="btn btn-sm" onclick="selectSup(${s.id});showView('detail')" style="margin-right:4px">View</button>
           <button class="btn btn-sm btn-danger" onclick="delSup(${s.id})">Delete</button>
-        </td>
-      </tr>`;
-    }).join('')}</tbody>
-  </table>`;
+        </td></tr>`;
+    }).join('')}</tbody></table>`;
 }
 
 async function addSupplier(){
@@ -530,7 +649,7 @@ async function delSup(id){
   }catch(e){alert('Error: '+e.message);}
 }
 
-// ── RATE ─────────────────────────────────────────────
+// ── RATE ──────────────────────────────────────────────
 function openAddRate(suppId){
   document.getElementById('rateModalTitle').textContent='Add rate';
   document.getElementById('rSuppId').value=suppId;
@@ -546,25 +665,16 @@ async function saveRate(){
   const description=document.getElementById('rDesc').value.trim();
   const price=parseFloat(document.getElementById('rPrice').value);
   if(!description||isNaN(price)){alert('Description and price are required');return;}
-  const entry={
-    supplier_id:parseInt(suppId),description,
-    grp:document.getElementById('rGroup').value.trim(),
-    price,unit:document.getElementById('rUnit').value,
-    section:document.getElementById('rSection').value.trim()||null,
-    valid_from:document.getElementById('rFrom').value||null,
-    valid_to:document.getElementById('rTo').value||null,
-    notes:document.getElementById('rNotes').value.trim()
-  };
+  const entry={supplier_id:parseInt(suppId),description,grp:document.getElementById('rGroup').value.trim(),price,unit:document.getElementById('rUnit').value,section:document.getElementById('rSection').value.trim()||null,valid_from:document.getElementById('rFrom').value||null,valid_to:document.getElementById('rTo').value||null,notes:document.getElementById('rNotes').value.trim()};
   try{
     if(rateId) await api('rates?id=eq.'+rateId,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify(entry)});
     else await api('rates',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(entry)});
-    closeModal('rateModal');toast('Rate saved!');
-    await loadAll();
+    closeModal('rateModal');toast('Rate saved!');await loadAll();
     if(curSup){curSup=suppliers.find(s=>s.id===curSup.id);renderDetail();}
   }catch(e){alert('Error: '+e.message);}
 }
 
-// ── DOCUMENT UPLOAD ───────────────────────────────────
+// ── DOC UPLOAD ────────────────────────────────────────
 function openDocUpload(id){
   document.getElementById('docSuppId').value=id;
   document.getElementById('docFile').value='';
@@ -578,20 +688,13 @@ async function uploadDoc(){
   if(!file){alert('Please select a file');return;}
   document.getElementById('docProg').style.display='block';
   try{
-    const path='supplier-'+id+'/'+file.name;
-    const url=await storageUp(path,file);
+    const url=await storageUp('supplier-'+id+'/'+file.name,file);
     await api('suppliers?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({pdf_url:url})});
     closeModal('docModal');toast('Document uploaded!');
-    excelCache={};// clear cache
-    await loadAll();
+    excelCache={};await loadAll();
     if(curSup&&curSup.id==id){curSup=suppliers.find(s=>s.id==id);renderDetail();}
-  }catch(e){
-    document.getElementById('docProg').style.display='none';
-    alert('Upload failed: '+e.message);
-  }
+  }catch(e){document.getElementById('docProg').style.display='none';alert('Upload failed: '+e.message);}
 }
-
-loadAll();
 </script>
 </body>
 </html>
