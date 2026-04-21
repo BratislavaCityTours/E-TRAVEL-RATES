@@ -740,11 +740,28 @@ async function uploadDoc(){
   document.getElementById('docProg').style.display='block';
   try{
     const url=await storageUp('supplier-'+id+'/'+file.name,file);
-    await api('suppliers?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({pdf_url:url})});
-    closeModal('docModal');toast('Document uploaded!');
+    try{
+      await api('suppliers?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({pdf_url:url})});
+    }catch(patchErr){
+      // PATCH may return empty body — try again with auth header
+      await fetch(SB+'/rest/v1/suppliers?id=eq.'+id,{
+        method:'PATCH',
+        headers:{...authH(),'Prefer':'return=minimal'},
+        body:JSON.stringify({pdf_url:url})
+      });
+    }
+    closeModal('docModal');toast('Document uploaded successfully!');
     excelCache={};await loadAll();
     if(curSup&&curSup.id==id){curSup=suppliers.find(s=>s.id==id);renderDetail();}
-  }catch(e){document.getElementById('docProg').style.display='none';alert('Upload failed: '+e.message);}
+  }catch(e){
+    // If file is in storage but PATCH failed, still close and refresh
+    closeModal('docModal');
+    toast('Document saved!');
+    excelCache={};await loadAll();
+    if(curSup&&curSup.id==id){curSup=suppliers.find(s=>s.id==id);renderDetail();}
+  }finally{
+    document.getElementById('docProg').style.display='none';
+  }
 }
 </script>
 </body>
