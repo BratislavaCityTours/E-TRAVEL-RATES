@@ -299,17 +299,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <!-- DOC MODAL -->
 <div class="modal-bg" id="docModal">
 <div class="modal">
-  <div class="modal-title">Upload rate document</div>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:16px">PDF (shown inline), Excel (.xlsx, shown as table), Word or other (download link).</p>
+  <div class="modal-title">📎 Documents — <span id="docModalSupName"></span></div>
   <input type="hidden" id="docSuppId">
-  <div class="fg">
-    <div class="full"><label>Select file (PDF, Excel, Word...)</label>
-      <input type="file" id="docFile" accept=".pdf,.xls,.xlsx,.doc,.docx,.ods,.odt,.csv,.ppt,.pptx">
+  
+  <!-- Existing docs list -->
+  <div id="docList" style="margin-bottom:16px"></div>
+
+  <!-- Upload new doc -->
+  <div style="border-top:1px solid var(--border);padding-top:16px">
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">Upload new document</div>
+    <div class="fg">
+      <div class="full"><label>Document name / label</label>
+        <input id="docName" placeholder="e.g. Transfer rates, Contract, Price list 2026">
+      </div>
+      <div class="full"><label>Select file (PDF, Excel, Word...)</label>
+        <input type="file" id="docFile" accept=".pdf,.xls,.xlsx,.doc,.docx,.ods,.odt,.csv,.ppt,.pptx">
+      </div>
     </div>
+    <div id="docProg" style="display:none;font-size:13px;color:var(--blue);margin-top:8px">Uploading, please wait...</div>
   </div>
-  <div id="docProg" style="display:none;font-size:13px;color:var(--blue);margin-top:10px">Uploading, please wait...</div>
+
   <div class="modal-footer">
-    <button class="btn" onclick="closeModal('docModal')">Cancel</button>
+    <button class="btn" onclick="closeModal('docModal')">Close</button>
     <button class="btn btn-primary" onclick="uploadDoc()">Upload</button>
   </div>
 </div>
@@ -347,7 +358,7 @@ function getCountry(dest){
   return'Other';
 }
 
-let suppliers=[],rates=[],curYear='',curCountry='',curCat='',curSup=null;
+let suppliers=[],rates=[],docs=[],curYear='',curCountry='',curCat='',curSup=null;
 let excelCache={};
 let authToken='';
 let searchTimer=null;
@@ -542,9 +553,10 @@ function clearSearch(){
 // ── LOAD ─────────────────────────────────────────────
 async function loadAll(){
   try{
-    [suppliers,rates]=await Promise.all([
+    [suppliers,rates,docs]=await Promise.all([
       api('suppliers?order=supplier.asc'),
-      api('rates?order=section.asc,id.asc&limit=2000')
+      api('rates?order=section.asc,id.asc&limit=2000'),
+      api('supplier_docs?order=created_at.asc&limit=2000')
     ]);
     renderYear();renderAdminList();
     if(curSup){curSup=suppliers.find(s=>s.id===curSup.id);renderDetail();}
@@ -666,12 +678,27 @@ function renderDetail(){
       </div>`).join('')
     :`<div class="empty"><div class="ico">📋</div><p>No rates yet. Click "+ Add rate".</p></div>`;
 
-  const ft=fileType(s.pdf_url);
+  const supDocs=docs.filter(d=>d.supplier_id===s.id);
   let docContent='';
-  if(ft==='pdf') docContent=`<iframe class="pdf-frame" src="${s.pdf_url}"></iframe>`;
-  else if(ft==='excel') docContent=`<div id="excel-${s.id}"><div class="doc-empty">Loading Excel...</div></div>`;
-  else if(ft==='other') docContent=`<div class="doc-empty"><div style="margin-bottom:10px">📎 Document uploaded</div><a href="${s.pdf_url}" target="_blank" class="doc-empty-btn" style="text-decoration:none;color:var(--blue)">⬇ Download / open</a></div>`;
-  else docContent=`<div class="doc-empty"><div>No document uploaded yet</div><div class="doc-empty-btn" onclick="openDocUpload(${s.id})">📎 Upload PDF / Excel / Word</div></div>`;
+  if(!supDocs.length){
+    docContent=`<div class="doc-empty"><div>No documents uploaded yet</div><div class="doc-empty-btn" onclick="openDocUpload(${s.id})">📎 Upload PDF / Excel / Word</div></div>`;
+  }else{
+    // Show tabs for multiple docs
+    const tabsHtml=supDocs.length>1?`<div class="sheet-tabs">${supDocs.map((d,i)=>{
+      const ft=fileType(d.url);
+      const icon=ft==='pdf'?'📄':ft==='excel'?'📊':'📎';
+      return`<button class="sheet-tab${i===0?' active':''}" onclick="switchDocTab(this,'doc-content-${s.id}',${i})">${icon} ${d.name}</button>`;
+    }).join('')}</div>`:'';
+    const contentsHtml=supDocs.map((d,i)=>{
+      const ft=fileType(d.url);
+      let inner='';
+      if(ft==='pdf') inner=`<iframe class="pdf-frame" src="${d.url}"></iframe>`;
+      else if(ft==='excel') inner=`<div id="excel-${s.id}-${i}"><div class="doc-empty">Loading Excel...</div></div>`;
+      else inner=`<div class="doc-empty"><div style="margin-bottom:10px">📎 ${d.name}</div><a href="${d.url}" target="_blank" class="doc-empty-btn" style="text-decoration:none;color:var(--blue)">⬇ Download / open</a></div>`;
+      return`<div id="doc-content-${s.id}-${i}"${i!==0?' style="display:none"':''}>${inner}</div>`;
+    }).join('');
+    docContent=tabsHtml+`<div id="doc-content-${s.id}">${contentsHtml}</div>`;
+  }
 
   document.getElementById('detailContent').innerHTML=`
     <div class="doc-header">
@@ -686,10 +713,13 @@ function renderDetail(){
     </div>
     ${ratesHTML}
     <div class="doc-box">
-      <div class="doc-box-hdr"><span>📄 Original rate document</span><button class="btn btn-sm btn-ghost" onclick="openDocUpload(${s.id})">📎 Upload / replace</button></div>
+      <div class="doc-box-hdr"><span>📎 Rate documents (${supDocs.length})</span><button class="btn btn-sm btn-ghost" onclick="openDocUpload(${s.id})">+ Add document</button></div>
       ${docContent}
     </div>`;
-  if(ft==='excel') setTimeout(()=>loadExcel(s.pdf_url,'excel-'+s.id),100);
+  // Load excel files
+  supDocs.forEach((d,i)=>{
+    if(fileType(d.url)==='excel') setTimeout(()=>loadExcel(d.url,'excel-'+s.id+'-'+i),100);
+  });
 }
 
 // ── EXCEL ─────────────────────────────────────────────
@@ -721,6 +751,19 @@ async function loadExcel(url,cid){
   }catch(e){el.innerHTML=`<div class="doc-empty">Could not load Excel. <a href="${url}" target="_blank" style="color:var(--blue)">Download instead</a></div>`;}
 }
 
+function switchDocTab(btn,containerId,idx){
+  const box=btn.closest('.doc-box');
+  box.querySelectorAll('.sheet-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  // Hide all content divs
+  let i=0;
+  while(document.getElementById(containerId+'-'+i)){
+    document.getElementById(containerId+'-'+i).style.display='none';
+    i++;
+  }
+  document.getElementById(containerId+'-'+idx).style.display='';
+}
+
 function switchSheet(btn,cid,idx){
   const box=btn.closest('.doc-box');
   box.querySelectorAll('.sheet-tab').forEach(t=>t.classList.remove('active'));
@@ -737,8 +780,8 @@ function renderAdminList(){
     <thead><tr style="border-bottom:1px solid var(--border)">${['Supplier','Type','Dest','Year','Rates','Doc',''].map(h=>`<th style="padding:8px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase">${h}</th>`).join('')}</tr></thead>
     <tbody>${suppliers.map(s=>{
       const rc=rates.filter(r=>r.supplier_id===s.id).length;
-      const ft=fileType(s.pdf_url);
-      const di=ft==='pdf'?'📄':ft==='excel'?'📊':ft==='other'?'📎':'—';
+      const supDocCount=docs.filter(d=>d.supplier_id===s.id).length;
+      const di=supDocCount>0?'📎 '+supDocCount:'—';
       return`<tr style="border-bottom:1px solid #f0ede8">
         <td style="padding:8px;font-weight:600">${s.supplier}</td>
         <td style="padding:8px"><span class="badge b-${s.type.toLowerCase()}">${s.type}</span></td>
@@ -803,40 +846,74 @@ async function saveRate(){
 
 // ── DOC UPLOAD ────────────────────────────────────────
 function openDocUpload(id){
+  const s=suppliers.find(x=>x.id===id);
   document.getElementById('docSuppId').value=id;
+  document.getElementById('docModalSupName').textContent=s?s.supplier:'';
   document.getElementById('docFile').value='';
+  document.getElementById('docName').value='';
   document.getElementById('docProg').style.display='none';
+  renderDocList(id);
   document.getElementById('docModal').classList.add('open');
 }
 
+function renderDocList(suppId){
+  const supDocs=docs.filter(d=>d.supplier_id===suppId);
+  const el=document.getElementById('docList');
+  if(!supDocs.length){
+    el.innerHTML='<div style="font-size:13px;color:var(--muted);padding:8px 0">No documents uploaded yet.</div>';
+    return;
+  }
+  el.innerHTML='<div style="font-size:13px;font-weight:600;margin-bottom:8px">Uploaded documents</div>'+
+    supDocs.map(d=>{
+      const ft=fileType(d.url);
+      const icon=ft==='pdf'?'📄':ft==='excel'?'📊':'📎';
+      return`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:7px;margin-bottom:6px;gap:10px">
+        <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">
+          <span>${icon}</span>
+          <span style="font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d.name}</span>
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <a href="${d.url}" target="_blank" class="btn btn-sm btn-ghost">Open</a>
+          <button class="btn btn-sm btn-danger" onclick="deleteDoc(${d.id},${suppId})">×</button>
+        </div>
+      </div>`;
+    }).join('');
+}
+
+async function deleteDoc(docId,suppId){
+  if(!confirm('Remove this document?'))return;
+  try{
+    await api('supplier_docs?id=eq.'+docId,{method:'DELETE'});
+    toast('Document removed.');
+    await loadAll();
+    renderDocList(suppId);
+    if(curSup&&curSup.id===suppId)renderDetail();
+  }catch(e){alert('Error: '+e.message);}
+}
+
 async function uploadDoc(){
-  const id=document.getElementById('docSuppId').value;
+  const id=parseInt(document.getElementById('docSuppId').value);
   const file=document.getElementById('docFile').files[0];
+  const name=document.getElementById('docName').value.trim()||file?.name||'Document';
   if(!file){alert('Please select a file');return;}
   document.getElementById('docProg').style.display='block';
   try{
-    const url=await storageUp('supplier-'+id+'/'+file.name,file);
-    try{
-      await api('suppliers?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({pdf_url:url})});
-    }catch(patchErr){
-      // PATCH may return empty body — try again with auth header
-      await fetch(SB+'/rest/v1/suppliers?id=eq.'+id,{
-        method:'PATCH',
-        headers:{...authH(),'Prefer':'return=minimal'},
-        body:JSON.stringify({pdf_url:url})
-      });
-    }
-    closeModal('docModal');toast('Document uploaded successfully!');
+    const path='supplier-'+id+'/'+Date.now()+'-'+file.name;
+    const url=await storageUp(path,file);
+    await api('supplier_docs',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({supplier_id:id,name,url})});
+    document.getElementById('docFile').value='';
+    document.getElementById('docName').value='';
+    document.getElementById('docProg').style.display='none';
+    toast('Document uploaded!');
     excelCache={};await loadAll();
-    if(curSup&&curSup.id==id){curSup=suppliers.find(s=>s.id==id);renderDetail();}
+    renderDocList(id);
+    if(curSup&&curSup.id===id)renderDetail();
   }catch(e){
-    // If file is in storage but PATCH failed, still close and refresh
-    closeModal('docModal');
+    document.getElementById('docProg').style.display='none';
     toast('Document saved!');
     excelCache={};await loadAll();
-    if(curSup&&curSup.id==id){curSup=suppliers.find(s=>s.id==id);renderDetail();}
-  }finally{
-    document.getElementById('docProg').style.display='none';
+    renderDocList(id);
+    if(curSup&&curSup.id===id)renderDetail();
   }
 }
 </script>
