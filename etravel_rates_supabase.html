@@ -435,15 +435,26 @@ async function api(path,opts={}){
   return r.json();
 }
 
+function sanitizeFilename(name){
+  return name
+    .normalize('NFD').replace(/[̀-ͯ]/g,'') // remove diacritics
+    .replace(/[^a-zA-Z0-9._-]/g,'_') // replace spaces/special chars with _
+    .replace(/_+/g,'_'); // collapse multiple underscores
+}
+
 async function storageUp(path,file){
+  // Sanitize the filename part of the path
+  const parts=path.split('/');
+  parts[parts.length-1]=sanitizeFilename(parts[parts.length-1]);
+  const cleanPath=parts.join('/');
   try{
-    await fetch(SB+'/storage/v1/object/rate-documents/'+path,{
+    await fetch(SB+'/storage/v1/object/rate-documents/'+cleanPath,{
       method:'POST',
       headers:{'apikey':KEY,'Authorization':'Bearer '+(authToken||KEY),'Content-Type':file.type,'x-upsert':'true'},
       body:file
     });
   }catch(e){if(e.name==='TypeError')throw e;}
-  return SB+'/storage/v1/object/public/rate-documents/'+path;
+  return SB+'/storage/v1/object/public/rate-documents/'+cleanPath;
 }
 
 // ── HELPERS ──────────────────────────────────────────
