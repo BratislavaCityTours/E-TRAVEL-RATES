@@ -6,108 +6,107 @@
 <title>E-TRAVEL.SK — Buy Rate Finder</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--blue:#185FA5;--blue-dark:#0e4a82;--blue-light:#e8f0fb;--green:#0F6E56;--bg:#f4f3ef;--white:#fff;--border:#e2dfd8;--text:#1a1a1a;--muted:#777;--card-shadow:0 2px 8px rgba(0,0,0,0.07)}
+:root{--blue:#185FA5;--blue-dark:#0e4a82;--blue-light:#e8f0fb;--green:#0F6E56;--bg:#f4f3ef;--white:#fff;--border:#e2dfd8;--text:#1a1a1a;--muted:#777;--shadow:0 2px 8px rgba(0,0,0,0.07)}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
-/* HEADER */
 .header{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.logo{font-size:15px;font-weight:700;letter-spacing:-0.3px}.logo span{color:var(--blue)}
-.header-actions{display:flex;align-items:center;gap:10px}
-.breadcrumb{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.logo{font-size:15px;font-weight:700}.logo span{color:var(--blue)}
+.breadcrumb{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .breadcrumb a{color:var(--blue);cursor:pointer;text-decoration:none}.breadcrumb a:hover{text-decoration:underline}
 .breadcrumb .sep{color:var(--border)}
+.sync{font-size:12px;color:var(--muted)}
 
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--text);transition:all 0.15s}
-.btn:hover{background:var(--bg)}
-.btn-primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-dark)}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--text);transition:all 0.15s}
+.btn:hover{background:var(--bg)}.btn-primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-dark)}
 .btn-green{background:var(--green);border-color:var(--green);color:#fff}.btn-green:hover{background:#0a5441}
-.btn-sm{padding:4px 10px;font-size:12px}
-.btn-ghost{border:none;background:none;color:var(--blue)}.btn-ghost:hover{background:var(--blue-light)}
+.btn-sm{padding:4px 10px;font-size:12px}.btn-ghost{border:none;background:none;color:var(--blue)}.btn-ghost:hover{background:var(--blue-light)}
+.btn-danger{color:#a00;border-color:#f5c0c0}.btn-danger:hover{background:#fff0f0}
 
-/* VIEWS */
-.view{display:none;padding:28px 24px;max-width:1100px;margin:0 auto}
+.view{display:none;padding:32px 24px;max-width:1100px;margin:0 auto}
 .view.active{display:block}
-
-/* HOME — category grid */
 .page-title{font-size:22px;font-weight:700;margin-bottom:6px}
-.page-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
-.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.page-sub{font-size:14px;color:var(--muted);margin-bottom:28px}
+
+/* YEAR GRID */
+.year-grid{display:flex;flex-wrap:wrap;gap:16px}
+.year-card{background:var(--white);border:2px solid var(--border);border-radius:14px;padding:32px 40px;cursor:pointer;transition:all 0.15s;text-align:center;min-width:160px}
+.year-card:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translateY(-2px)}
+.year-card.active-year{border-color:var(--blue);background:var(--blue-light)}
+.year-num{font-size:36px;font-weight:800;color:var(--blue);margin-bottom:6px}
+.year-meta{font-size:13px;color:var(--muted)}
+.year-add{background:var(--bg);border:2px dashed var(--border);color:var(--muted);font-size:24px}
+.year-add:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+
+/* CATEGORY GRID */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
 .cat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:24px 20px;cursor:pointer;transition:all 0.15s;text-align:center}
-.cat-card:hover{border-color:var(--blue);box-shadow:var(--card-shadow);transform:translateY(-2px)}
-.cat-icon{font-size:32px;margin-bottom:10px}
+.cat-card:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translateY(-2px)}
+.cat-icon{font-size:34px;margin-bottom:10px}
 .cat-name{font-size:15px;font-weight:600;margin-bottom:4px}
 .cat-count{font-size:12px;color:var(--muted)}
 
-/* SUPPLIER LIST */
-.supplier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+/* SUPPLIER GRID */
+.supplier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
 .supplier-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px 20px;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:space-between}
-.supplier-card:hover{border-color:var(--blue);box-shadow:var(--card-shadow)}
-.supplier-info{}
+.supplier-card:hover{border-color:var(--blue);box-shadow:var(--shadow)}
 .supplier-name{font-size:14px;font-weight:600;margin-bottom:3px}
 .supplier-meta{font-size:12px;color:var(--muted)}
-.supplier-badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:5px;white-space:nowrap}
-.arrow{color:var(--muted);font-size:18px}
+.arrow{color:var(--muted);font-size:20px}
 
-/* SUPPLIER DETAIL — document style */
-.doc-header{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.doc-supplier-name{font-size:20px;font-weight:700;margin-bottom:4px}
-.doc-meta{font-size:13px;color:var(--muted)}
+/* DETAIL / DOCUMENT */
+.doc-header{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:22px 26px;margin-bottom:14px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.doc-name{font-size:20px;font-weight:700;margin-bottom:5px}
+.doc-meta{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .doc-actions{display:flex;gap:8px;flex-wrap:wrap}
 
 .doc-section{background:var(--white);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden}
-.doc-section-title{padding:12px 20px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);background:#faf9f6;border-bottom:1px solid var(--border)}
-.rate-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:12px 20px;border-bottom:1px solid #f5f3ef}
+.doc-section-title{padding:11px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);background:#faf9f6;border-bottom:1px solid var(--border)}
+.rate-row{display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:center;padding:12px 20px;border-bottom:1px solid #f5f3ef}
 .rate-row:last-child{border-bottom:none}
 .rate-row:hover{background:#faf9f6}
 .rate-desc{font-size:13px;font-weight:500}
-.rate-group{font-size:12px;color:var(--muted);margin-top:2px}
-.rate-price{font-size:16px;font-weight:700;color:var(--blue);text-align:right;white-space:nowrap}
-.rate-unit{font-size:11px;color:var(--muted);text-align:right;white-space:nowrap}
-.rate-notes{font-size:11px;color:var(--muted);margin-top:2px}
+.rate-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.rate-price{font-size:16px;font-weight:700;color:var(--blue);white-space:nowrap;text-align:right}
+.rate-unit{font-size:11px;color:var(--muted);white-space:nowrap;text-align:right}
 
-/* PDF viewer */
-.pdf-section{background:var(--white);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden}
-.pdf-section-title{padding:12px 20px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);background:#faf9f6;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.pdf-embed{width:100%;height:600px;border:none}
-.pdf-upload-area{padding:32px;text-align:center;color:var(--muted);font-size:13px}
-.pdf-upload-area label{cursor:pointer;display:inline-block;padding:10px 20px;border:1.5px dashed var(--border);border-radius:8px;margin-top:10px;transition:all 0.15s}
-.pdf-upload-area label:hover{border-color:var(--blue);color:var(--blue)}
+.pdf-box{background:var(--white);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.pdf-box-header{padding:11px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);background:#faf9f6;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.pdf-embed{width:100%;height:620px;border:none}
+.pdf-empty{padding:32px;text-align:center;color:var(--muted);font-size:13px}
+.pdf-empty-btn{display:inline-block;margin-top:10px;padding:8px 18px;border:1.5px dashed var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s}
+.pdf-empty-btn:hover{border-color:var(--blue);color:var(--blue)}
 
-/* ADMIN PANEL */
-.admin-section{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:16px}
-.admin-title{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.form-group{display:flex;flex-direction:column;gap:4px}
-.form-group.full{grid-column:1/-1}
-.form-group label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em}
-.form-group input,.form-group select,.form-group textarea{padding:8px 11px;border:1px solid var(--border);border-radius:7px;font-size:13px;background:var(--white);color:var(--text);width:100%}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--blue)}
-.form-group textarea{resize:vertical;min-height:56px}
+/* ADMIN */
+.admin-box{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:16px}
+.admin-box-title{font-size:14px;font-weight:600;margin-bottom:14px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg .full{grid-column:1/-1}
+.fg label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;display:block;margin-bottom:3px}
+.fg input,.fg select,.fg textarea{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:7px;font-size:13px;background:var(--white);color:var(--text)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--blue)}
+.fg textarea{resize:vertical;min-height:54px}
 
 /* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center}
 .modal-bg.open{display:flex}
-.modal{background:var(--white);border-radius:14px;padding:24px;width:580px;max-width:96vw;max-height:92vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,0.15)}
+.modal{background:var(--white);border-radius:14px;padding:24px;width:560px;max-width:96vw;max-height:92vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,0.15)}
 .modal-title{font-size:16px;font-weight:700;margin-bottom:16px}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
 
-/* STATUS */
-.status-bar{position:fixed;bottom:16px;right:16px;background:#1a1a1a;color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;z-index:300;opacity:0;transition:opacity 0.3s;pointer-events:none}
-.status-bar.show{opacity:1}
-
-/* BADGES */
 .badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600}
 .b-transfer{background:#ddeefb;color:#0a4478}.b-guide{background:#ddf0e3;color:#1a5c2e}
 .b-restaurant{background:#fef0dc;color:#7a4410}.b-hotel{background:#ebe8fd;color:#3d2a8a}
 .b-attraction{background:#fde8e2;color:#7a2a18}.b-cruise{background:#d8f0eb;color:#0a5040}
 .b-concert{background:#fce8f2;color:#7a1e4a}.b-other{background:#eeede8;color:#444}
 
-.empty-state{text-align:center;padding:48px 24px;color:var(--muted)}
-.empty-state .icon{font-size:40px;margin-bottom:12px}
-.empty-state p{font-size:14px}
+.empty{text-align:center;padding:48px;color:var(--muted)}
+.empty .ico{font-size:40px;margin-bottom:12px}
 
-@media(max-width:600px){.cat-grid{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.view{padding:16px}}
+.toast{position:fixed;bottom:20px;right:20px;background:#1a1a1a;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:400;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.toast.show{opacity:1}
+
+@media print{.header,.doc-actions,.pdf-box-header button,.btn{display:none!important}.view{padding:0}}
+@media(max-width:600px){.cat-grid{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr}.view{padding:16px 14px}}
 </style>
 </head>
 <body>
@@ -115,27 +114,32 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="header">
   <div style="display:flex;align-items:center;gap:16px">
     <div class="logo">E-TRAVEL<span>.SK</span></div>
-    <div class="breadcrumb" id="breadcrumb"></div>
+    <div class="breadcrumb" id="bc"></div>
   </div>
-  <div class="header-actions">
-    <span id="syncBadge" style="font-size:12px;color:var(--muted)">Connecting...</span>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="sync" id="sync">Connecting...</span>
     <button class="btn btn-sm" onclick="showView('admin')">⚙ Admin</button>
   </div>
 </div>
 
-<!-- HOME VIEW -->
-<div class="view active" id="view-home">
-  <div class="page-title">Buy Rate Finder 2026</div>
-  <div class="page-sub">Select a service category to browse supplier rates</div>
+<!-- YEAR VIEW -->
+<div class="view active" id="view-year">
+  <div class="page-title">E-TRAVEL.SK — Buy Rate Finder</div>
+  <div class="page-sub">Select a year to browse supplier rates</div>
+  <div class="year-grid" id="yearGrid"></div>
+</div>
+
+<!-- CATEGORY VIEW -->
+<div class="view" id="view-cat">
   <div class="cat-grid" id="catGrid"></div>
 </div>
 
-<!-- SUPPLIER LIST VIEW -->
-<div class="view" id="view-suppliers">
-  <div class="supplier-grid" id="supplierGrid"></div>
+<!-- SUPPLIER VIEW -->
+<div class="view" id="view-sup">
+  <div class="supplier-grid" id="supGrid"></div>
 </div>
 
-<!-- SUPPLIER DETAIL VIEW -->
+<!-- DETAIL VIEW -->
 <div class="view" id="view-detail">
   <div id="detailContent"></div>
 </div>
@@ -143,13 +147,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <!-- ADMIN VIEW -->
 <div class="view" id="view-admin">
   <div class="page-title">Admin panel</div>
-  <div class="page-sub">Add suppliers and manage rates</div>
+  <div class="page-sub">Manage suppliers and rates</div>
 
-  <div class="admin-section">
-    <div class="admin-title">➕ Add new supplier</div>
-    <div class="form-grid">
-      <div class="form-group"><label>Supplier name *</label><input id="aSupplier" placeholder="e.g. ADSERVICE"></div>
-      <div class="form-group"><label>Service type *</label>
+  <div class="admin-box">
+    <div class="admin-box-title">➕ Add new supplier</div>
+    <div class="fg">
+      <div><label>Supplier name *</label><input id="aName" placeholder="e.g. ADSERVICE"></div>
+      <div><label>Service type *</label>
         <select id="aType">
           <option value="">Select...</option>
           <option>Transfer</option><option>Guide</option><option>Restaurant</option>
@@ -157,247 +161,254 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
           <option>Concert</option><option>Other</option>
         </select>
       </div>
-      <div class="form-group"><label>Destination *</label><input id="aDest" placeholder="e.g. Bratislava"></div>
-      <div class="form-group"><label>Year</label>
+      <div><label>Destination *</label><input id="aDest" placeholder="e.g. Bratislava"></div>
+      <div><label>Year *</label>
         <select id="aYear"><option>2026</option><option>2025</option><option>2027</option></select>
       </div>
-      <div class="form-group full"><label>Notes / general conditions</label><textarea id="aNotes" placeholder="General conditions, cancellation policy, contacts..."></textarea></div>
+      <div class="full"><label>General notes / contacts</label><textarea id="aNotes" placeholder="Contact, cancellation policy, general conditions..."></textarea></div>
     </div>
-    <div style="margin-top:10px"><button class="btn btn-primary" onclick="addSupplier()">Add supplier</button></div>
+    <div style="margin-top:12px"><button class="btn btn-primary" onclick="addSupplier()">Add supplier</button></div>
   </div>
 
-  <div class="admin-section">
-    <div class="admin-title">📋 All suppliers</div>
-    <div id="adminSupplierList"></div>
+  <div class="admin-box">
+    <div class="admin-box-title">📋 All suppliers</div>
+    <div id="adminList"></div>
   </div>
 </div>
 
-<!-- ADD RATE MODAL -->
+<!-- RATE MODAL -->
 <div class="modal-bg" id="rateModal">
 <div class="modal">
   <div class="modal-title" id="rateModalTitle">Add rate</div>
-  <input type="hidden" id="rSupplierId">
-  <input type="hidden" id="rRateId">
-  <div class="form-grid">
-    <div class="form-group full"><label>Service / route description *</label><input id="rDesc" placeholder="e.g. BTS Airport → Hotel center, car"></div>
-    <div class="form-group"><label>Group / pax</label><input id="rGroup" placeholder="e.g. 1-3 pax, group"></div>
-    <div class="form-group"><label>Buy price (EUR) *</label><input type="number" id="rPrice" step="0.01" placeholder="0.00"></div>
-    <div class="form-group"><label>Unit</label>
+  <input type="hidden" id="rSuppId"><input type="hidden" id="rRateId">
+  <div class="fg">
+    <div class="full"><label>Section heading (optional)</label><input id="rSection" placeholder="e.g. Airport transfers, Vienna routes"></div>
+    <div class="full"><label>Service / route description *</label><input id="rDesc" placeholder="e.g. BTS Airport → Hotel center, car"></div>
+    <div><label>Group / pax</label><input id="rGroup" placeholder="e.g. 1-3 pax, group, any"></div>
+    <div><label>Buy price (EUR) *</label><input type="number" id="rPrice" step="0.01" placeholder="0.00"></div>
+    <div><label>Unit</label>
       <select id="rUnit">
         <option>per vehicle/service</option><option>per person</option>
         <option>per group</option><option>per room/night</option><option>per hour</option>
       </select>
     </div>
-    <div class="form-group"><label>Valid from</label><input type="date" id="rFrom"></div>
-    <div class="form-group"><label>Valid to</label><input type="date" id="rTo"></div>
-    <div class="form-group full"><label>Notes / conditions</label><textarea id="rNotes" placeholder="e.g. Incl. VAT, 20+1 FOC, +10% service charge"></textarea></div>
-    <div class="form-group full"><label>Section heading (optional)</label><input id="rSection" placeholder="e.g. Vienna routes, Airport transfers"></div>
+    <div><label>Valid from</label><input type="date" id="rFrom"></div>
+    <div><label>Valid to</label><input type="date" id="rTo"></div>
+    <div class="full"><label>Notes / conditions</label><textarea id="rNotes" placeholder="e.g. Incl. VAT, 20+1 FOC, +10% service charge"></textarea></div>
   </div>
-  <div class="modal-actions">
-    <button class="btn" onclick="closeModal()">Cancel</button>
+  <div class="modal-footer">
+    <button class="btn" onclick="closeModal('rateModal')">Cancel</button>
     <button class="btn btn-green" onclick="saveRate()">Save rate</button>
   </div>
 </div>
 </div>
 
-<!-- UPLOAD PDF MODAL -->
+<!-- PDF MODAL -->
 <div class="modal-bg" id="pdfModal">
 <div class="modal">
   <div class="modal-title">Upload rate document</div>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Upload the original PDF or Word file for this supplier. It will be stored and displayed alongside the rates.</p>
-  <input type="hidden" id="pdfSupplierId">
-  <div class="form-group" style="margin-bottom:16px">
-    <label>Select file (PDF recommended)</label>
-    <input type="file" id="pdfFile" accept=".pdf,.doc,.docx,.xls,.xlsx">
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Upload the original PDF rate sheet for this supplier. It will be shown alongside the rates.</p>
+  <input type="hidden" id="pdfSuppId">
+  <div class="fg">
+    <div class="full"><label>Select file (PDF recommended)</label><input type="file" id="pdfFile" accept=".pdf,.doc,.docx,.xls,.xlsx"></div>
   </div>
-  <div id="pdfProgress" style="display:none;font-size:13px;color:var(--blue)">Uploading...</div>
-  <div class="modal-actions">
-    <button class="btn" onclick="closePdfModal()">Cancel</button>
-    <button class="btn btn-primary" onclick="uploadPdf()">Upload document</button>
+  <div id="pdfProg" style="display:none;font-size:13px;color:var(--blue);margin-top:10px">Uploading, please wait...</div>
+  <div class="modal-footer">
+    <button class="btn" onclick="closeModal('pdfModal')">Cancel</button>
+    <button class="btn btn-primary" onclick="uploadPdf()">Upload</button>
   </div>
 </div>
 </div>
 
-<div class="status-bar" id="statusBar"></div>
+<!-- ADD YEAR MODAL -->
+<div class="modal-bg" id="yearModal">
+<div class="modal">
+  <div class="modal-title">Add year</div>
+  <div class="fg">
+    <div class="full"><label>Year *</label><input id="newYear" placeholder="e.g. 2027" type="number" min="2020" max="2035"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" onclick="closeModal('yearModal')">Cancel</button>
+    <button class="btn btn-primary" onclick="confirmAddYear()">Add year</button>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-const SB_URL='https://dwinbhzqwghsejjbfsxa.supabase.co';
-const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3aW5iaHpxd2doc2VqamJmc3hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MjAzNjMsImV4cCI6MjA5MjE5NjM2M30.ZStkPwoQQtAARmcd0JfIHmQzLVIQwYMBNGjoxFy8KKE';
-const H={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
+const SB='https://dwinbhzqwghsejjbfsxa.supabase.co';
+const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3aW5iaHpxd2doc2VqamJmc3hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MjAzNjMsImV4cCI6MjA5MjE5NjM2M30.ZStkPwoQQtAARmcd0JfIHmQzLVIQwYMBNGjoxFy8KKE';
+const H={'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY};
 
-const CATS={
-  Transfer:{icon:'🚌',color:'#0a4478',bg:'#ddeefb'},
-  Guide:{icon:'🎤',color:'#1a5c2e',bg:'#ddf0e3'},
-  Restaurant:{icon:'🍽️',color:'#7a4410',bg:'#fef0dc'},
-  Hotel:{icon:'🏨',color:'#3d2a8a',bg:'#ebe8fd'},
-  Attraction:{icon:'🏛️',color:'#7a2a18',bg:'#fde8e2'},
-  Cruise:{icon:'🚢',color:'#0a5040',bg:'#d8f0eb'},
-  Concert:{icon:'🎶',color:'#7a1e4a',bg:'#fce8f2'},
-  Other:{icon:'📦',color:'#444',bg:'#eeede8'}
-};
+const CATS={Transfer:{icon:'🚌'},Guide:{icon:'🎤'},Restaurant:{icon:'🍽️'},Hotel:{icon:'🏨'},Attraction:{icon:'🏛️'},Cruise:{icon:'🚢'},Concert:{icon:'🎶'},Other:{icon:'📦'}};
 
-let suppliers=[];let rates=[];
-let curCat='';let curSupplier=null;
+let suppliers=[],rates=[],curYear='',curCat='',curSupplier=null;
 
-// API helpers
 async function api(path,opts={}){
-  const r=await fetch(SB_URL+'/rest/v1/'+path,{headers:{...H,...(opts.headers||{})},method:opts.method||'GET',body:opts.body});
-  if(!r.ok){const t=await r.text();throw new Error(t);}
-  return(opts.method&&opts.method!=='GET'&&opts.method!=='PATCH')?r:r.json();
-}
-async function storageUpload(bucket,path,file){
-  const r=await fetch(SB_URL+'/storage/v1/object/'+bucket+'/'+path,{method:'POST',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':file.type,'x-upsert':'true'},body:file});
+  const r=await fetch(SB+'/rest/v1/'+path,{headers:{...H,...(opts.headers||{})},method:opts.method||'GET',body:opts.body});
   if(!r.ok)throw new Error(await r.text());
-  return SB_URL+'/storage/v1/object/public/'+bucket+'/'+path;
+  return(opts.method&&!['GET','PATCH'].includes(opts.method))?r:r.json();
 }
 
-function status(msg,dur=2500){
-  const el=document.getElementById('statusBar');el.textContent=msg;el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),dur);
+async function storageUp(path,file){
+  const r=await fetch(SB+'/storage/v1/object/rate-documents/'+path,{method:'POST',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':file.type,'x-upsert':'true'},body:file});
+  if(!r.ok)throw new Error(await r.text());
+  return SB+'/storage/v1/object/public/rate-documents/'+path;
 }
 
-// LOAD DATA
+function toast(msg,dur=2500){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),dur);}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');}));
+
 async function loadAll(){
   try{
     [suppliers,rates]=await Promise.all([
       api('suppliers?order=supplier.asc'),
-      api('rates?order=section.asc,description.asc&limit=2000')
+      api('rates?order=section.asc,id.asc&limit=2000')
     ]);
-    document.getElementById('syncBadge').textContent='✓ '+suppliers.length+' suppliers';
-    renderHome();
-    renderAdminList();
+    const n=suppliers.length;
+    document.getElementById('sync').textContent='✓ '+n+' supplier'+(n!==1?'s':'');
+    renderYear();renderAdminList();
   }catch(e){
-    document.getElementById('syncBadge').textContent='⚠ Connection error';
-    document.getElementById('syncBadge').style.color='#c00';
+    document.getElementById('sync').textContent='⚠ Connection error';
+    document.getElementById('sync').style.color='#c00';
     console.error(e);
   }
 }
 
 // VIEWS
-function showView(name,extra){
+function showView(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
-  updateBreadcrumb(name,extra);
+  renderBc();
 }
 
-function updateBreadcrumb(view,extra){
-  const bc=document.getElementById('breadcrumb');
-  if(view==='home'){bc.innerHTML='';return;}
-  let html='<a onclick="goHome()">Home</a>';
-  if(view==='suppliers'&&curCat){
-    html+='<span class="sep">/</span><span>'+curCat+'</span>';
-  }else if(view==='detail'&&curSupplier){
-    html+='<span class="sep">/</span><a onclick="showCat(\''+curSupplier.type+'\')">'+curSupplier.type+'</a>';
-    html+='<span class="sep">/</span><span>'+curSupplier.supplier+'</span>';
-  }else if(view==='admin'){
-    html+='<span class="sep">/</span><span>Admin</span>';
-  }
-  bc.innerHTML=html;
+function renderBc(){
+  const bc=document.getElementById('bc');
+  let h='';
+  if(curYear) h+=`<a onclick="goYear()">${curYear}</a>`;
+  if(curCat) h+=`<span class="sep">/</span><a onclick="goCat()">${curCat}</a>`;
+  if(curSupplier) h+=`<span class="sep">/</span><span>${curSupplier.supplier}</span>`;
+  bc.innerHTML=h;
 }
 
-function goHome(){curCat='';curSupplier=null;renderHome();showView('home');}
-function showCat(cat){curCat=cat;renderSuppliers(cat);showView('suppliers');}
+function goYear(){curCat='';curSupplier=null;renderYear();showView('year');}
+function goCat(){curSupplier=null;renderCat();showView('cat');}
 
-// HOME
-function renderHome(){
-  const counts={};
-  suppliers.forEach(s=>{counts[s.type]=(counts[s.type]||0)+1;});
+// YEAR
+function years(){return[...new Set(suppliers.map(s=>s.year))].sort().reverse();}
+
+function renderYear(){
+  const ys=years();
+  const grid=document.getElementById('yearGrid');
+  grid.innerHTML=ys.map(y=>{
+    const n=suppliers.filter(s=>s.year===y).length;
+    return`<div class="year-card" onclick="selectYear('${y}')">
+      <div class="year-num">${y}</div>
+      <div class="year-meta">${n} supplier${n!==1?'s':''}</div>
+    </div>`;
+  }).join('')+`<div class="year-card year-add" onclick="openAddYear()" title="Add year">+</div>`;
+}
+
+function selectYear(y){curYear=y;curCat='';curSupplier=null;renderCat();showView('cat');}
+
+function openAddYear(){document.getElementById('newYear').value='';document.getElementById('yearModal').classList.add('open');}
+function confirmAddYear(){
+  const y=document.getElementById('newYear').value.trim();
+  if(!y||isNaN(y)){alert('Enter a valid year');return;}
+  curYear=y;closeModal('yearModal');renderCat();showView('cat');
+  document.getElementById('aYear').innerHTML=[y,'2026','2025','2027'].filter((v,i,a)=>a.indexOf(v)===i).map(v=>`<option${v===y?' selected':''}>${v}</option>`).join('');
+}
+
+// CATEGORY
+function renderCat(){
+  const filtered=suppliers.filter(s=>s.year===curYear);
+  const counts={};filtered.forEach(s=>{counts[s.type]=(counts[s.type]||0)+1;});
   const grid=document.getElementById('catGrid');
-  grid.innerHTML=Object.entries(CATS).map(([type,cfg])=>{
-    const c=counts[type]||0;
-    if(c===0)return'';
-    return`<div class="cat-card" onclick="showCat('${type}')">
+  const cats=Object.entries(CATS).filter(([t])=>counts[t]);
+  if(!cats.length){
+    grid.innerHTML=`<div class="empty"><div class="ico">📂</div><p>No suppliers for ${curYear} yet.<br>Go to Admin to add suppliers.</p></div>`;
+    return;
+  }
+  grid.innerHTML=cats.map(([type,cfg])=>`
+    <div class="cat-card" onclick="selectCat('${type}')">
       <div class="cat-icon">${cfg.icon}</div>
       <div class="cat-name">${type}</div>
-      <div class="cat-count">${c} supplier${c!==1?'s':''}</div>
-    </div>`;
-  }).join('');
+      <div class="cat-count">${counts[type]} supplier${counts[type]!==1?'s':''}</div>
+    </div>`).join('');
 }
 
-// SUPPLIER LIST
-function renderSuppliers(cat){
-  const filtered=suppliers.filter(s=>s.type===cat);
-  const cfg=CATS[cat]||CATS.Other;
-  const grid=document.getElementById('supplierGrid');
-  if(!filtered.length){grid.innerHTML='<div class="empty-state"><div class="icon">'+cfg.icon+'</div><p>No suppliers yet in this category.</p></div>';return;}
+function selectCat(cat){curCat=cat;curSupplier=null;renderSup();showView('sup');}
+
+// SUPPLIER
+function renderSup(){
+  const filtered=suppliers.filter(s=>s.year===curYear&&s.type===curCat);
+  const grid=document.getElementById('supGrid');
   grid.innerHTML=filtered.map(s=>{
-    const rateCount=rates.filter(r=>r.supplier_id===s.id).length;
-    return`<div class="supplier-card" onclick="showDetail(${s.id})">
-      <div class="supplier-info">
+    const rc=rates.filter(r=>r.supplier_id===s.id).length;
+    return`<div class="supplier-card" onclick="selectSupplier(${s.id})">
+      <div>
         <div class="supplier-name">${s.supplier}</div>
-        <div class="supplier-meta">${s.dest} · ${rateCount} rate${rateCount!==1?'s':''} · ${s.year}</div>
+        <div class="supplier-meta">${s.dest} · ${rc} rate${rc!==1?'s':''}</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
-        <span class="badge b-${cat.toLowerCase()}">${cat}</span>
+        <span class="badge b-${curCat.toLowerCase()}">${curCat}</span>
         <span class="arrow">›</span>
       </div>
     </div>`;
   }).join('');
 }
 
-// SUPPLIER DETAIL
-function showDetail(id){
-  curSupplier=suppliers.find(s=>s.id===id);
-  if(!curSupplier)return;
-  renderDetail();
-  showView('detail');
-}
+function selectSupplier(id){curSupplier=suppliers.find(s=>s.id===id);renderDetail();showView('detail');}
 
+// DETAIL
 function renderDetail(){
   const s=curSupplier;
-  const supRates=rates.filter(r=>r.supplier_id===s.id);
-  const cfg=CATS[s.type]||CATS.Other;
+  const sr=rates.filter(r=>r.supplier_id===s.id);
+  const secs={};
+  sr.forEach(r=>{const k=r.section||'Rates';if(!secs[k])secs[k]=[];secs[k].push(r);});
 
-  // Group rates by section
-  const sections={};
-  supRates.forEach(r=>{
-    const key=r.section||'Rates';
-    if(!sections[key])sections[key]=[];
-    sections[key].push(r);
-  });
+  const ratesHTML=sr.length
+    ?Object.entries(secs).map(([sec,rs])=>`
+      <div class="doc-section">
+        <div class="doc-section-title">${sec}</div>
+        ${rs.map(r=>`
+          <div class="rate-row">
+            <div>
+              <div class="rate-desc">${r.description}</div>
+              ${r.grp?`<div class="rate-sub">${r.grp}</div>`:''}
+              ${r.notes?`<div class="rate-sub" style="font-style:italic">${r.notes}</div>`:''}
+            </div>
+            <div><div class="rate-unit">${r.unit||''}</div></div>
+            <div><div class="rate-price">${Number(r.price).toFixed(2)} €</div></div>
+          </div>`).join('')}
+      </div>`).join('')
+    :`<div class="empty"><div class="ico">📋</div><p>No rates yet.<br>Click "+ Add rate" to add the first one.</p></div>`;
 
-  const sectionsHTML=Object.entries(sections).map(([sec,rs])=>`
-    <div class="doc-section">
-      <div class="doc-section-title">${sec}</div>
-      ${rs.map(r=>`
-        <div class="rate-row">
-          <div>
-            <div class="rate-desc">${r.description}</div>
-            ${r.grp?`<div class="rate-group">${r.grp}</div>`:''}
-            ${r.notes?`<div class="rate-notes">${r.notes}</div>`:''}
-          </div>
-          <div style="text-align:right">
-            <div class="rate-unit">${r.unit||''}</div>
-          </div>
-          <div style="text-align:right">
-            <div class="rate-price">${Number(r.price).toFixed(2)} €</div>
-          </div>
-        </div>`).join('')}
-    </div>`).join('');
-
-  // PDF section
   const pdfHTML=`
-    <div class="pdf-section">
-      <div class="pdf-section-title">
+    <div class="pdf-box">
+      <div class="pdf-box-header">
         <span>📄 Original rate document</span>
-        <button class="btn btn-sm btn-ghost" onclick="openPdfUpload(${s.id})">📎 Upload document</button>
+        <button class="btn btn-sm btn-ghost" onclick="openPdfUpload(${s.id})">📎 Upload / replace document</button>
       </div>
       ${s.pdf_url
         ?`<iframe class="pdf-embed" src="${s.pdf_url}"></iframe>`
-        :`<div class="pdf-upload-area">
+        :`<div class="pdf-empty">
             <div>No document uploaded yet</div>
-            <label onclick="openPdfUpload(${s.id})">📎 Upload original PDF / Word file</label>
+            <div class="pdf-empty-btn" onclick="openPdfUpload(${s.id})">📎 Upload original PDF / Word file</div>
           </div>`}
     </div>`;
 
   document.getElementById('detailContent').innerHTML=`
     <div class="doc-header">
       <div>
-        <div class="doc-supplier-name">${s.supplier}</div>
+        <div class="doc-name">${s.supplier}</div>
         <div class="doc-meta">
           <span class="badge b-${s.type.toLowerCase()}">${s.type}</span>
-          &nbsp;${s.dest} &nbsp;·&nbsp; ${s.year}
-          ${s.notes?'&nbsp;·&nbsp;<span style="color:var(--muted)">'+s.notes+'</span>':''}
+          <span>${s.dest}</span>
+          <span>·</span><span>${s.year}</span>
+          ${s.notes?`<span>·</span><span style="font-style:italic">${s.notes}</span>`:''}
         </div>
       </div>
       <div class="doc-actions">
@@ -405,22 +416,17 @@ function renderDetail(){
         <button class="btn btn-sm btn-primary" onclick="openAddRate(${s.id})">+ Add rate</button>
       </div>
     </div>
-    ${supRates.length?sectionsHTML:`<div class="empty-state"><div class="icon">📋</div><p>No rates added yet. Click "+ Add rate" to add the first one.</p></div>`}
+    ${ratesHTML}
     ${pdfHTML}`;
 }
 
 // ADMIN
 function renderAdminList(){
-  const el=document.getElementById('adminSupplierList');
+  const el=document.getElementById('adminList');
   if(!suppliers.length){el.innerHTML='<div style="color:var(--muted);font-size:13px">No suppliers yet.</div>';return;}
   el.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px">
     <thead><tr style="border-bottom:1px solid var(--border)">
-      <th style="padding:8px;text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase">Supplier</th>
-      <th style="padding:8px;text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase">Type</th>
-      <th style="padding:8px;text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase">Dest</th>
-      <th style="padding:8px;text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase">Rates</th>
-      <th style="padding:8px;text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase">Doc</th>
-      <th></th>
+      ${['Supplier','Type','Dest','Year','Rates','Doc',''].map(h=>`<th style="padding:8px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase">${h}</th>`).join('')}
     </tr></thead>
     <tbody>${suppliers.map(s=>{
       const rc=rates.filter(r=>r.supplier_id===s.id).length;
@@ -428,109 +434,96 @@ function renderAdminList(){
         <td style="padding:8px;font-weight:600">${s.supplier}</td>
         <td style="padding:8px"><span class="badge b-${s.type.toLowerCase()}">${s.type}</span></td>
         <td style="padding:8px;color:var(--muted)">${s.dest}</td>
+        <td style="padding:8px;color:var(--muted)">${s.year}</td>
         <td style="padding:8px">${rc}</td>
         <td style="padding:8px">${s.pdf_url?'✅':'—'}</td>
-        <td style="padding:8px;text-align:right">
-          <button class="btn btn-sm" onclick="showDetail(${s.id});showView('detail')" style="margin-right:4px">View</button>
-          <button class="btn btn-sm" style="color:#a00;border-color:#f5c0c0" onclick="deleteSupplier(${s.id})">Delete</button>
+        <td style="padding:8px;text-align:right;white-space:nowrap">
+          <button class="btn btn-sm" onclick="selectSupplier(${s.id});showView('detail')" style="margin-right:4px">View</button>
+          <button class="btn btn-sm btn-danger" onclick="delSupplier(${s.id})">Delete</button>
         </td>
       </tr>`;
     }).join('')}</tbody>
   </table>`;
 }
 
-// ADD SUPPLIER
 async function addSupplier(){
-  const supplier=document.getElementById('aSupplier').value.trim();
+  const supplier=document.getElementById('aName').value.trim();
   const type=document.getElementById('aType').value;
   const dest=document.getElementById('aDest').value.trim();
   const year=document.getElementById('aYear').value;
   const notes=document.getElementById('aNotes').value.trim();
-  if(!supplier||!type||!dest){alert('Please fill required fields');return;}
+  if(!supplier||!type||!dest){alert('Please fill required fields (*)');return;}
   try{
     await api('suppliers',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({supplier,type,dest,year,notes})});
-    document.getElementById('aSupplier').value='';
-    document.getElementById('aNotes').value='';
-    status('Supplier added!');
-    await loadAll();
+    document.getElementById('aName').value='';document.getElementById('aNotes').value='';
+    toast('Supplier added!');await loadAll();
   }catch(e){alert('Error: '+e.message);}
 }
 
-async function deleteSupplier(id){
-  if(!confirm('Delete this supplier and all their rates?'))return;
+async function delSupplier(id){
+  if(!confirm('Delete this supplier and ALL their rates? This cannot be undone.'))return;
   try{
     await api('rates?supplier_id=eq.'+id,{method:'DELETE'});
     await api('suppliers?id=eq.'+id,{method:'DELETE'});
-    status('Deleted.');
-    await loadAll();
+    toast('Deleted.');await loadAll();
   }catch(e){alert('Error: '+e.message);}
 }
 
-// ADD/EDIT RATE
-function openAddRate(supplierId){
+// RATE
+function openAddRate(suppId){
   document.getElementById('rateModalTitle').textContent='Add rate';
-  document.getElementById('rSupplierId').value=supplierId;
+  document.getElementById('rSuppId').value=suppId;
   document.getElementById('rRateId').value='';
-  ['rDesc','rGroup','rPrice','rFrom','rTo','rNotes','rSection'].forEach(id=>{document.getElementById(id).value='';});
+  ['rSection','rDesc','rGroup','rPrice','rFrom','rTo','rNotes'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('rUnit').value='per vehicle/service';
   document.getElementById('rateModal').classList.add('open');
 }
 
 async function saveRate(){
-  const supplierId=document.getElementById('rSupplierId').value;
+  const suppId=document.getElementById('rSuppId').value;
   const rateId=document.getElementById('rRateId').value;
   const description=document.getElementById('rDesc').value.trim();
   const price=parseFloat(document.getElementById('rPrice').value);
   if(!description||isNaN(price)){alert('Description and price are required');return;}
   const entry={
-    supplier_id:parseInt(supplierId),description,
+    supplier_id:parseInt(suppId),description,
     grp:document.getElementById('rGroup').value.trim(),
     price,unit:document.getElementById('rUnit').value,
+    section:document.getElementById('rSection').value.trim()||null,
     valid_from:document.getElementById('rFrom').value||null,
     valid_to:document.getElementById('rTo').value||null,
-    notes:document.getElementById('rNotes').value.trim(),
-    section:document.getElementById('rSection').value.trim()||null
+    notes:document.getElementById('rNotes').value.trim()
   };
   try{
-    if(rateId){
-      await api('rates?id=eq.'+rateId,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify(entry)});
-    }else{
-      await api('rates',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(entry)});
-    }
-    closeModal();status('Rate saved!');
+    if(rateId) await api('rates?id=eq.'+rateId,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify(entry)});
+    else await api('rates',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(entry)});
+    closeModal('rateModal');toast('Rate saved!');
     await loadAll();
-    if(curSupplier)renderDetail();
+    if(curSupplier){curSupplier=suppliers.find(s=>s.id===curSupplier.id);renderDetail();}
   }catch(e){alert('Error: '+e.message);}
 }
 
-function closeModal(){document.getElementById('rateModal').classList.remove('open');}
-
-// PDF UPLOAD
+// PDF
 function openPdfUpload(id){
-  document.getElementById('pdfSupplierId').value=id;
+  document.getElementById('pdfSuppId').value=id;
   document.getElementById('pdfFile').value='';
-  document.getElementById('pdfProgress').style.display='none';
+  document.getElementById('pdfProg').style.display='none';
   document.getElementById('pdfModal').classList.add('open');
 }
-function closePdfModal(){document.getElementById('pdfModal').classList.remove('open');}
 
 async function uploadPdf(){
-  const id=document.getElementById('pdfSupplierId').value;
+  const id=document.getElementById('pdfSuppId').value;
   const file=document.getElementById('pdfFile').files[0];
   if(!file){alert('Please select a file');return;}
-  document.getElementById('pdfProgress').style.display='block';
+  document.getElementById('pdfProg').style.display='block';
   try{
-    const path='supplier-'+id+'/'+file.name;
-    const url=await storageUpload('rate-documents',path,file);
+    const url=await storageUp('supplier-'+id+'/'+file.name,file);
     await api('suppliers?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({pdf_url:url})});
-    closePdfModal();status('Document uploaded!');
+    closeModal('pdfModal');toast('Document uploaded!');
     await loadAll();
     if(curSupplier&&curSupplier.id==id){curSupplier=suppliers.find(s=>s.id==id);renderDetail();}
-  }catch(e){document.getElementById('pdfProgress').style.display='none';alert('Upload failed: '+e.message);}
+  }catch(e){document.getElementById('pdfProg').style.display='none';alert('Upload failed: '+e.message);}
 }
-
-document.getElementById('rateModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
-document.getElementById('pdfModal').addEventListener('click',function(e){if(e.target===this)closePdfModal();});
 
 loadAll();
 </script>
