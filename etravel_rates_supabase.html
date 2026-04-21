@@ -210,6 +210,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="year-grid" id="yearGrid"></div>
 </div>
 
+<div class="view" id="view-country">
+  <div class="cat-grid" id="countryGrid"></div>
+</div>
+
 <div class="view" id="view-cat">
   <div class="cat-grid" id="catGrid"></div>
 </div>
@@ -323,8 +327,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 const SB='https://dwinbhzqwghsejjbfsxa.supabase.co';
 const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3aW5iaHpxd2doc2VqamJmc3hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MjAzNjMsImV4cCI6MjA5MjE5NjM2M30.ZStkPwoQQtAARmcd0JfIHmQzLVIQwYMBNGjoxFy8KKE';
 const CATS={Transfer:'🚌',Guide:'🎤',Restaurant:'🍽️',Hotel:'🏨',Attraction:'🏛️',Cruise:'🚢',Concert:'🎶',Other:'📦'};
+const COUNTRIES={Slovakia:{icon:'🇸🇰',dests:['Bratislava','Pezinok','Piešťany','Košice','Žilina','Banská Bystrica','Trnava','Nitra','Slovakia','Varin']},Austria:{icon:'🇦🇹',dests:['Vienna','Salzburg','Innsbruck','Graz','Austria','Wien']},Hungary:{icon:'🇭🇺',dests:['Budapest','Hungary']},Poland:{icon:'🇵🇱',dests:['Krakow','Warsaw','Poland','Prague']},Other:{icon:'🌍',dests:[]}};
 
-let suppliers=[],rates=[],curYear='',curCat='',curSup=null;
+function getCountry(dest){
+  if(!dest)return'Other';
+  const dl=dest.toLowerCase();
+  for(const[c,cfg]of Object.entries(COUNTRIES)){
+    if(c==='Other')continue;
+    if(cfg.dests.some(d=>dl.includes(d.toLowerCase())||d.toLowerCase().includes(dl)))return c;
+  }
+  return'Other';
+}
+
+let suppliers=[],rates=[],curYear='',curCountry='',curCat='',curSup=null;
 let excelCache={};
 let authToken='';
 let searchTimer=null;
@@ -470,7 +485,7 @@ function goToRate(suppId){
   clearSearch();
   const s=suppliers.find(x=>x.id===suppId);
   if(!s)return;
-  curYear=s.year;curCat=s.type;curSup=s;
+  curYear=s.year;curCountry=getCountry(s.dest);curCat=s.type;curSup=s;
   renderDetail();showView('detail');
 }
 
@@ -478,7 +493,7 @@ function goToSupplier(suppId){
   clearSearch();
   const s=suppliers.find(x=>x.id===suppId);
   if(!s)return;
-  curYear=s.year;curCat=s.type;curSup=s;
+  curYear=s.year;curCountry=getCountry(s.dest);curCat=s.type;curSup=s;
   renderDetail();showView('detail');
 }
 
@@ -504,7 +519,7 @@ async function loadAll(){
 function showView(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
-  const showSearch=curYear&&name!=='admin';
+  const showSearch=curYear&&name!=='admin'&&name!=='year';
   document.getElementById('searchBarWrap').style.display=showSearch?'block':'none';
   if(!showSearch)clearSearch();
   renderBc();
@@ -513,12 +528,14 @@ function showView(name){
 function renderBc(){
   let h='';
   if(curYear)h+=`<a onclick="goYear()">${curYear}</a>`;
+  if(curCountry)h+=`<span class="sep">/</span><a onclick="goCountry()">${curCountry}</a>`;
   if(curCat)h+=`<span class="sep">/</span><a onclick="goCat()">${curCat}</a>`;
   if(curSup)h+=`<span class="sep">/</span><span>${curSup.supplier}</span>`;
   document.getElementById('bc').innerHTML=h;
 }
 
-function goYear(){curCat='';curSup=null;clearSearch();renderYear();showView('year');}
+function goYear(){curCountry='';curCat='';curSup=null;clearSearch();renderYear();showView('year');}
+function goCountry(){curCat='';curSup=null;clearSearch();renderCountry();showView('country');}
 function goCat(){curSup=null;clearSearch();renderSup();showView('sup');}
 
 // ── YEAR ─────────────────────────────────────────────
@@ -535,13 +552,36 @@ function renderYear(){
     `<div class="year-card year-add" onclick="openAddYear()" title="Add year">+</div>`;
 }
 
-function selectYear(y){curYear=y;curCat='';curSup=null;clearSearch();renderCat();showView('cat');}
+function selectYear(y){curYear=y;curCountry='';curCat='';curSup=null;clearSearch();renderCountry();showView('country');}
 function openAddYear(){document.getElementById('newYear').value='';document.getElementById('yearModal').classList.add('open');}
-function confirmAddYear(){const y=document.getElementById('newYear').value.trim();if(!y||isNaN(y)){alert('Enter a valid year');return;}curYear=y;closeModal('yearModal');renderCat();showView('cat');}
+function confirmAddYear(){const y=document.getElementById('newYear').value.trim();if(!y||isNaN(y)){alert('Enter a valid year');return;}curYear=y;closeModal('yearModal');renderCountry();showView('country');}
 
 // ── CATEGORY ─────────────────────────────────────────
+function renderCountry(){
+  const yearSups=suppliers.filter(s=>s.year===curYear);
+  // Count suppliers per country
+  const counts={};
+  yearSups.forEach(s=>{
+    const c=getCountry(s.dest);
+    counts[c]=(counts[c]||0)+1;
+  });
+  const available=Object.entries(COUNTRIES).filter(([c])=>counts[c]>0);
+  if(!available.length){
+    document.getElementById('countryGrid').innerHTML=`<div class="empty"><div class="ico">📂</div><p>No suppliers for ${curYear} yet.<br>Go to Admin to add suppliers.</p></div>`;
+    return;
+  }
+  document.getElementById('countryGrid').innerHTML=available.map(([country,cfg])=>`
+    <div class="cat-card" onclick="selectCountry('${country}')">
+      <div class="cat-icon">${cfg.icon}</div>
+      <div class="cat-name">${country}</div>
+      <div class="cat-count">${counts[country]} supplier${counts[country]!==1?'s':''}</div>
+    </div>`).join('');
+}
+
+function selectCountry(country){curCountry=country;curCat='';curSup=null;renderCat();showView('cat');}
+
 function renderCat(){
-  const filtered=suppliers.filter(s=>s.year===curYear);
+  const filtered=suppliers.filter(s=>s.year===curYear&&(!curCountry||getCountry(s.dest)===curCountry));
   const counts={};filtered.forEach(s=>{counts[s.type]=(counts[s.type]||0)+1;});
   const cats=Object.keys(CATS).filter(t=>counts[t]);
   if(!cats.length){document.getElementById('catGrid').innerHTML=`<div class="empty"><div class="ico">📂</div><p>No suppliers for ${curYear} yet.</p></div>`;return;}
@@ -557,7 +597,7 @@ function selectCat(cat){curCat=cat;curSup=null;renderSup();showView('sup');}
 
 // ── SUPPLIER ─────────────────────────────────────────
 function renderSup(){
-  const filtered=suppliers.filter(s=>s.year===curYear&&s.type===curCat);
+  const filtered=suppliers.filter(s=>s.year===curYear&&s.type===curCat&&(!curCountry||getCountry(s.dest)===curCountry));
   document.getElementById('supGrid').innerHTML=filtered.map(s=>{
     const rc=rates.filter(r=>r.supplier_id===s.id).length;
     return`<div class="sup-card" onclick="selectSup(${s.id})">
