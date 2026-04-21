@@ -169,6 +169,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <label>Password</label>
       <input type="password" id="loginPwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
     </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <input type="checkbox" id="rememberMe" checked style="width:auto;cursor:pointer">
+      <label for="rememberMe" style="font-size:13px;color:var(--muted);cursor:pointer;text-transform:none;letter-spacing:0">Remember me</label>
+    </div>
     <button class="login-btn" onclick="doLogin()" id="loginBtn">Sign in</button>
     <div class="login-err" id="loginErr"></div>
   </div>
@@ -205,8 +209,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div id="searchResultsWrap" style="display:none;padding:12px 20px 0;max-width:1100px;margin:0 auto"></div>
 
 <div class="view active" id="view-year">
-  <div class="page-title">Buy Rate Finder</div>
-  <div class="page-sub">Select a year to browse supplier rates</div>
+  <div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <div>
+      <div class="page-title">Buy Rate Finder</div>
+      <div class="page-sub" style="margin-bottom:0">Select a year</div>
+    </div>
+  </div>
   <div class="year-grid" id="yearGrid"></div>
 </div>
 
@@ -361,22 +369,50 @@ async function doLogin(){
     const d=await r.json();
     if(!r.ok||d.error)throw new Error(d.error_description||d.error||'Login failed');
     authToken=d.access_token;
-    document.getElementById('userInfo').textContent=email;
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('mainApp').style.display='block';
-    loadAll();
+    const remember=document.getElementById('rememberMe').checked;
+    if(remember){
+      localStorage.setItem('etravel_token',d.access_token);
+      localStorage.setItem('etravel_email',email);
+      localStorage.setItem('etravel_expires',d.expires_at||'');
+    }else{
+      sessionStorage.setItem('etravel_token',d.access_token);
+      sessionStorage.setItem('etravel_email',email);
+    }
+    showApp(email);
   }catch(e){err.textContent=e.message;}
   btn.textContent='Sign in';btn.disabled=false;
 }
 
+function showApp(email){
+  document.getElementById('userInfo').textContent=email;
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('mainApp').style.display='block';
+  loadAll();
+}
+
 function doLogout(){
   authToken='';
+  localStorage.removeItem('etravel_token');
+  localStorage.removeItem('etravel_email');
+  localStorage.removeItem('etravel_expires');
+  sessionStorage.removeItem('etravel_token');
+  sessionStorage.removeItem('etravel_email');
   document.getElementById('loginScreen').style.display='flex';
   document.getElementById('mainApp').style.display='none';
   document.getElementById('loginEmail').value='';
   document.getElementById('loginPwd').value='';
   document.getElementById('loginErr').textContent='';
 }
+
+// Auto-login on page load
+(function(){
+  const token=localStorage.getItem('etravel_token')||sessionStorage.getItem('etravel_token');
+  const email=localStorage.getItem('etravel_email')||sessionStorage.getItem('etravel_email');
+  if(token&&email){
+    authToken=token;
+    showApp(email);
+  }
+})();
 
 // ── API ──────────────────────────────────────────────
 function authH(){return{'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+(authToken||KEY)};}
